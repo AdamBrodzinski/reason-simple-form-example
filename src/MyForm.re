@@ -7,10 +7,7 @@ let make = _children => {
   render: _self =>
     <div className="MyForm">
       <Form>
-        <TextInput
-          name="firstName"
-          dangerousDomProps={"autofocus": "autofocus"}
-        />
+        <TextInput name="firstName" unsafeProps={"autofocus": ""} />
       </Form>
     </div>,
 };
