@@ -2,6 +2,15 @@
 open ViewUtils;
 open SimpleForm;
 
+type schemaItem = {
+  name: string,
+  label: string,
+};
+
+let formSchema: list(schemaItem) = [
+  {name: "firstName", label: "First name"},
+];
+
 let make = _children => {
   ...statelessComponent("MyForm"),
   render: _self =>

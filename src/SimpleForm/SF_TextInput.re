@@ -11,6 +11,7 @@ let make = (~name: string, ~unsafeProps=?, _children) => {
   render: _self => {
     let input = <input name onChange=handleChange />;
     <div className="sf-input-container">
+      <label> (ReasonReact.string("Todo")) </label>
       (
         switch (unsafeProps) {
         | Some(props) => ReasonReact.cloneElement(input, ~props, [||])
