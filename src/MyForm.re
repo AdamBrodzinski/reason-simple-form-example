@@ -1,8 +1,9 @@
-[%bs.raw {|require('./App.css')|}];
-let component = ReasonReact.statelessComponent("MyForm");
+[%bs.raw {|require('./SimpleForm/simple-form.css')|}];
+open ViewUtils;
+open SimpleForm;
 
 let make = _children => {
-  ...component,
+  ...statelessComponent("MyForm"),
   render: _self =>
-    <div className="MyForm"> (ReasonReact.string("Form")) </div>,
+    <div className="MyForm"> <Form> <TextInput /> </Form> </div>,
 };
