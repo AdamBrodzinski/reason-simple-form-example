@@ -5,5 +5,7 @@ open SimpleForm;
 let make = _children => {
   ...statelessComponent("MyForm"),
   render: _self =>
-    <div className="MyForm"> <Form> <TextInput /> </Form> </div>,
+    <div className="MyForm">
+      <Form> <TextInput name="firstName" /> </Form>
+    </div>,
 };
