@@ -2,13 +2,11 @@
 open ViewUtils;
 open SimpleForm;
 
-type schemaItem = {
-  name: string,
-  label: string,
-};
+type schemas = list(Form.schemaItem);
 
-let formSchema: list(schemaItem) = [
+let formSchema: schemas = [
   {name: "firstName", label: "First name"},
+  {name: "lastName", label: "Last name"},
 ];
 
 let make = _children => {
@@ -16,7 +14,12 @@ let make = _children => {
   render: _self =>
     <div className="MyForm">
       <Form>
-        <TextInput name="firstName" unsafeProps={"autofocus": ""} />
+        <TextInput
+          name="firstName"
+          formSchema
+          unsafeProps={"autofocus": ""}
+        />
+        <TextInput name="lastName" formSchema />
       </Form>
     </div>,
 };
