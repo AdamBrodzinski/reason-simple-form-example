@@ -1,0 +1,31 @@
+.sf-debug {
+  margin-top: 20px;
+}
+
+.sf-input-container {
+  margin-bottom: 25px;
+}
+
+.sf-input-container label {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #484848;
+}
+
+.sf-input-container input {
+  font-size: 1em;
+  width: 100%;
+  padding: 0.4em;
+}
+
+.sf-form-container input[type="submit"] {
+  background: #9e9e9e;
+  border: 1px solid #6f6969;
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 400;
+}
