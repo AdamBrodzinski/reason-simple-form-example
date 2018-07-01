@@ -6,10 +6,16 @@ let handleChange = (event: formEv) => {
   Js.log(foo);
 };
 
-let make = (~name, ~_autoFocus=?, _children) => {
+let make = (~name: string, ~dangerousDomProps, _children) => {
   ...component,
   render: _self =>
     <div className="sf-input-container">
-      <input type_="text" name onChange=handleChange />
+      (
+        ReasonReact.cloneElement(
+          <input name onChange=handleChange />,
+          ~props=dangerousDomProps,
+          [||],
+        )
+      )
     </div>,
 };
