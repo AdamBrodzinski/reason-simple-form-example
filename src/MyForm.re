@@ -14,11 +14,7 @@ let make = _children => {
   render: _self =>
     <div className="MyForm">
       <Form schema=formSchema>
-        <TextInput
-          name="firstName"
-          formSchema
-          unsafeProps={"autofocus": ""}
-        />
+        <TextInput name="firstName" unsafeProps={"autofocus": ""} />
         <TextInput name="lastName" />
       </Form>
     </div>,

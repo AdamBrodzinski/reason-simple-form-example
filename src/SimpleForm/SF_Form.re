@@ -10,7 +10,10 @@ module Context =
   ReasonReactContext.CreateContext({
     type state = schemaList;
     let name = "FormContext";
-    let defaultValue = [];
+    let defaultValue = [
+      {name: "firstName", label: "First name"},
+      {name: "lastName", label: "Last name"},
+    ];
   });
 
 let make = (~schema: schemaList, children) => {

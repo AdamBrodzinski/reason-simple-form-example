@@ -15,21 +15,22 @@ let make = (~name: string, ~unsafeProps=?, _children) => {
     <SF_Form.Context.Consumer>
       ...(
            (formSchema: schemaList) => {
-               let input = <input name onChange=handleChange />;
-               let schema =
-                 formSchema |> List.find((x: scItem) => x.name == name);
-               <div className="sf-input-container">
-                 <label> (ReasonReact.string(schema.label)) </label>
-                 (
-                   switch (unsafeProps) {
-                   | Some(props) =>
-                     ReasonReact.cloneElement(input, ~props, [||])
-                   | None => ReasonReact.cloneElement(input, [||])
-                   }
-                 )
-               </div>
-              }
-           )
+             Js.log("schema list");
+             Js.log(formSchema);
+             let input = <input name onChange=handleChange />;
+             let schema =
+               formSchema |> List.find((x: scItem) => x.name == name);
+             <div className="sf-input-container">
+               <label> (ReasonReact.string(schema.label)) </label>
+               (
+                 switch (unsafeProps) {
+                 | Some(props) =>
+                   ReasonReact.cloneElement(input, ~props, [||])
+                 | None => ReasonReact.cloneElement(input, [||])
+                 }
+               )
+             </div>;
+           }
          )
     </SF_Form.Context.Consumer>,
 };
