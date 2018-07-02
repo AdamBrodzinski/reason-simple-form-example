@@ -4,17 +4,27 @@ type schemaItem = {
   name: string,
   label: string,
 };
+type schemaList = list(schemaItem);
 
-let make = children => {
+module Context =
+  ReasonReactContext.CreateContext({
+    type state = schemaList;
+    let name = "FormContext";
+    let defaultValue = [];
+  });
+
+let make = (~schema: schemaList, children) => {
   ...component,
   render: _self =>
-    <div className="sf-form-container">
-      (
-        ReasonReact.createDomElement(
-          "form",
-          ~props={"className": "sf-form"},
-          children,
+    <Context.Provider value=schema>
+      <div className="sf-form-container">
+        (
+          ReasonReact.createDomElement(
+            "form",
+            ~props={"className": "sf-form"},
+            children,
+          )
         )
-      )
-    </div>,
+      </div>
+    </Context.Provider>,
 };

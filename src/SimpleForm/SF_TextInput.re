@@ -9,19 +9,27 @@ let handleChange = (event: formEv) => {
   Js.log(value);
 };
 
-let make = (~name: string, ~formSchema: schemaList, ~unsafeProps=?, _children) => {
+let make = (~name: string, ~unsafeProps=?, _children) => {
   ...component,
-  render: _self => {
-    let input = <input name onChange=handleChange />;
-    let schema = formSchema |> List.find((x: scItem) => x.name == name);
-    <div className="sf-input-container">
-      <label> (ReasonReact.string(schema.label)) </label>
-      (
-        switch (unsafeProps) {
-        | Some(props) => ReasonReact.cloneElement(input, ~props, [||])
-        | None => ReasonReact.cloneElement(input, [||])
-        }
-      )
-    </div>;
-  },
+  render: _self =>
+    <SF_Form.Context.Consumer>
+      ...(
+           (formSchema: schemaList) => {
+               let input = <input name onChange=handleChange />;
+               let schema =
+                 formSchema |> List.find((x: scItem) => x.name == name);
+               <div className="sf-input-container">
+                 <label> (ReasonReact.string(schema.label)) </label>
+                 (
+                   switch (unsafeProps) {
+                   | Some(props) =>
+                     ReasonReact.cloneElement(input, ~props, [||])
+                   | None => ReasonReact.cloneElement(input, [||])
+                   }
+                 )
+               </div>
+              }
+           )
+         )
+    </SF_Form.Context.Consumer>,
 };

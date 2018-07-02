@@ -6354,7 +6354,13 @@ realpath-native@^1.0.0:
   dependencies:
     util.promisify "^1.0.0"
 
-reason-react@^0.4.2:
+reason-react-context@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/reason-react-context/-/reason-react-context-0.2.0.tgz#b269530d10e525377e4fdea7dd8c52caac9ff87b"
+  dependencies:
+    reason-react "^0.4.1"
+
+reason-react@^0.4.1, reason-react@^0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/reason-react/-/reason-react-0.4.2.tgz#690d34e3e91a2585cdc5f58384b6c8ff653c32c1"
   dependencies:

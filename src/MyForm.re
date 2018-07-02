@@ -13,13 +13,13 @@ let make = _children => {
   ...statelessComponent("MyForm"),
   render: _self =>
     <div className="MyForm">
-      <Form>
+      <Form schema=formSchema>
         <TextInput
           name="firstName"
           formSchema
           unsafeProps={"autofocus": ""}
         />
-        <TextInput name="lastName" formSchema />
+        <TextInput name="lastName" />
       </Form>
     </div>,
 };
