@@ -5,11 +5,14 @@ type action =
 
 type state = formState;
 
+let getInitialState = () : state => {submitted: false};
+
 module Context =
   ReasonReactContext.CreateContext({
     type state = context;
     let name = "FormContext";
     let defaultValue: context = {
+      formState: getInitialState(),
       schemas: [
         {name: "firstName", label: "First name"},
         {name: "lastName", label: "Last name"},
@@ -19,8 +22,6 @@ module Context =
 
 let component = ReasonReact.reducerComponent("SF_Form");
 
-let getInitialState = () : state => {submitted: false};
-
 let make = (~schema, children) => {
   ...component,
   initialState: getInitialState,
@@ -29,8 +30,8 @@ let make = (~schema, children) => {
     | Submitted => ReasonReact.Update({submitted: true})
     },
   render: self => {
-    let contextValue: context = {schemas: schema};
-    Js.log(self.state);
+    let contextValue: context = {schemas: schema, formState: self.state};
+    Js.log(contextValue);
     <Context.Provider value=contextValue>
       <div className="sf-form-container">
         (

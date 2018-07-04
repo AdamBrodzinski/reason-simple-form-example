@@ -3,6 +3,9 @@ type schemaItem = {
   label: string,
 };
 
-type context = {schemas: list(schemaItem)};
-
 type formState = {submitted: bool};
+
+type context = {
+  formState,
+  schemas: list(schemaItem),
+};
