@@ -15,8 +15,8 @@ let make = (~name: string, ~unsafeProps=?, _children) => {
       ...(
            ctx => {
              let formSchemaItems = ctx.schemas;
-             Js.log("schema list");
-             Js.log(formSchemaItems);
+             /* Js.log("schema list");
+                Js.log(formSchemaItems); */
              let input = <input name onChange=handleChange />;
              let schema = formSchemaItems |> List.find(x => x.name == name);
              <div className="sf-input-container">

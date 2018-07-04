@@ -4,3 +4,5 @@ type schemaItem = {
 };
 
 type context = {schemas: list(schemaItem)};
+
+type formState = {submitted: bool};

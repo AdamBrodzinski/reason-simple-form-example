@@ -1,5 +1,9 @@
 open SF_Types;
-let component = ReasonReact.statelessComponent("SF_Form");
+
+type action =
+  | Submitted;
+
+type state = formState;
 
 module Context =
   ReasonReactContext.CreateContext({
@@ -13,16 +17,33 @@ module Context =
     };
   });
 
+let component = ReasonReact.reducerComponent("SF_Form");
+
+let getInitialState = () : state => {submitted: false};
+
 let make = (~schema, children) => {
   ...component,
-  render: _self => {
+  initialState: getInitialState,
+  reducer: (action, _state) =>
+    switch (action) {
+    | Submitted => ReasonReact.Update({submitted: true})
+    },
+  render: self => {
     let contextValue: context = {schemas: schema};
+    Js.log(self.state);
     <Context.Provider value=contextValue>
       <div className="sf-form-container">
         (
           ReasonReact.createDomElement(
             "form",
-            ~props={"className": "sf-form"},
+            ~props={
+              "className": "sf-form",
+              "onSubmit": event => {
+                SF_Utils.preventDefault(event);
+                self.send(Submitted);
+                Js.log("submit");
+              },
+            },
             children,
           )
         )
