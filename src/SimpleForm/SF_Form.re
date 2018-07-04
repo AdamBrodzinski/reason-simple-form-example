@@ -5,18 +5,28 @@ type action =
 
 type state = formState;
 
-let getInitialState = () : state => {submitted: false};
+let hardcodedSchema: list(schemaItem) = [
+  {name: "firstName", label: "First name"},
+  {name: "lastName", label: "Last name"},
+];
+
+/* create default states for each input based on form schema */
+let getInitialState = (schemas: list(schemaItem)) : state => {
+  submitted: false,
+  inputStates:
+    List.map(
+      (x: schemaItem) => {name: x.name, value: "", dirty: false},
+      schemas,
+    ),
+};
 
 module Context =
   ReasonReactContext.CreateContext({
     type state = context;
     let name = "FormContext";
     let defaultValue: context = {
-      formState: getInitialState(),
-      schemas: [
-        {name: "firstName", label: "First name"},
-        {name: "lastName", label: "Last name"},
-      ],
+      formState: getInitialState(hardcodedSchema),
+      schemas: hardcodedSchema,
     };
   });
 
@@ -24,10 +34,10 @@ let component = ReasonReact.reducerComponent("SF_Form");
 
 let make = (~schema, children) => {
   ...component,
-  initialState: getInitialState,
-  reducer: (action, _state) =>
+  initialState: () => getInitialState(schema),
+  reducer: (action, state) =>
     switch (action) {
-    | Submitted => ReasonReact.Update({submitted: true})
+    | Submitted => ReasonReact.Update({...state, submitted: true})
     },
   render: self => {
     let contextValue: context = {schemas: schema, formState: self.state};

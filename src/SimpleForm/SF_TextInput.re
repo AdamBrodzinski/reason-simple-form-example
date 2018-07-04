@@ -18,7 +18,8 @@ let make = (~name: string, ~unsafeProps=?, _children) => {
              /* Js.log("schema list");
                 Js.log(formSchemaItems); */
              let input = <input name onChange=handleChange />;
-             let schema = formSchemaItems |> List.find(x => x.name == name);
+             let schema =
+               formSchemaItems |> List.find((x: schemaItem) => x.name == name);
              <div className="sf-input-container">
                <label> (ReasonReact.string(schema.label)) </label>
                (

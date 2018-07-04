@@ -3,7 +3,16 @@ type schemaItem = {
   label: string,
 };
 
-type formState = {submitted: bool};
+type inputState = {
+  name: string,
+  value: string,
+  dirty: bool,
+};
+
+type formState = {
+  submitted: bool,
+  inputStates: list(inputState),
+};
 
 type context = {
   formState,
