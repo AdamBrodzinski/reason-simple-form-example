@@ -1,10 +1,9 @@
 [%bs.raw {|require('./SimpleForm/simple-form.css')|}];
 open ViewUtils;
+open SF_Types;
 open SimpleForm;
 
-type schemas = list(Form.schemaItem);
-
-let formSchema: schemas = [
+let formSchema: list(schemaItem) = [
   {name: "firstName", label: "First name"},
   {name: "lastName", label: "Last name"},
 ];

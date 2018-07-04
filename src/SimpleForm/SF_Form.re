@@ -1,22 +1,17 @@
+open SF_Types;
 let component = ReasonReact.statelessComponent("SF_Form");
-
-type schemaItem = {
-  name: string,
-  label: string,
-};
-type schemaList = list(schemaItem);
 
 module Context =
   ReasonReactContext.CreateContext({
-    type state = schemaList;
+    type state = list(schemaItem);
     let name = "FormContext";
-    let defaultValue = [
+    let defaultValue: list(schemaItem) = [
       {name: "firstName", label: "First name"},
       {name: "lastName", label: "Last name"},
     ];
   });
 
-let make = (~schema: schemaList, children) => {
+let make = (~schema, children) => {
   ...component,
   render: _self =>
     <Context.Provider value=schema>
