@@ -13,11 +13,12 @@ let make = (~name: string, ~unsafeProps=?, _children) => {
   render: _self =>
     <SF_Form.Context.Consumer>
       ...(
-           formSchemas => {
+           ctx => {
+             let formSchemaItems = ctx.schemas;
              Js.log("schema list");
-             Js.log(formSchemas);
+             Js.log(formSchemaItems);
              let input = <input name onChange=handleChange />;
-             let schema = formSchemas |> List.find(x => x.name == name);
+             let schema = formSchemaItems |> List.find(x => x.name == name);
              <div className="sf-input-container">
                <label> (ReasonReact.string(schema.label)) </label>
                (

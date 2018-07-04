@@ -3,18 +3,21 @@ let component = ReasonReact.statelessComponent("SF_Form");
 
 module Context =
   ReasonReactContext.CreateContext({
-    type state = list(schemaItem);
+    type state = context;
     let name = "FormContext";
-    let defaultValue: list(schemaItem) = [
-      {name: "firstName", label: "First name"},
-      {name: "lastName", label: "Last name"},
-    ];
+    let defaultValue: context = {
+      schemas: [
+        {name: "firstName", label: "First name"},
+        {name: "lastName", label: "Last name"},
+      ],
+    };
   });
 
 let make = (~schema, children) => {
   ...component,
-  render: _self =>
-    <Context.Provider value=schema>
+  render: _self => {
+    let contextValue: context = {schemas: schema};
+    <Context.Provider value=contextValue>
       <div className="sf-form-container">
         (
           ReasonReact.createDomElement(
@@ -24,5 +27,6 @@ let make = (~schema, children) => {
           )
         )
       </div>
-    </Context.Provider>,
+    </Context.Provider>;
+  },
 };
