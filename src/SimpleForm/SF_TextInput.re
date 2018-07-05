@@ -1,11 +1,12 @@
 open SF_Types;
+
 type formEvent = ReactEventRe.Form.t;
 
 let component = ReasonReact.statelessComponent("SF_TextInput");
 
-let handleChange = (event: formEvent) => {
+let handleChange = (ctx, name, event: formEvent) => {
   let value = SF_Utils.getEventValue(event);
-  Js.log(value);
+  ctx.updateInput(name, value);
 };
 
 let make = (~name: string, ~unsafeProps=?, _children) => {
@@ -14,22 +15,8 @@ let make = (~name: string, ~unsafeProps=?, _children) => {
     <SF_Form.Context.Consumer>
       ...(
            ctx => {
-             let formSchemaItems = ctx.schemas;
-             /* Js.log("schema list");
-                Js.log(formSchemaItems); */
-             let input =
-               <input
-                 name
-                 onChange=(
-                   (event: formEvent) => {
-                     let value = SF_Utils.getEventValue(event);
-                     Js.log(value);
-                     ctx.updateInput(name, value);
-                   }
-                 )
-               />;
-             let schema =
-               formSchemaItems |> List.find((x: schemaItem) => x.name == name);
+             let input = <input name onChange=(handleChange(ctx, name)) />;
+             let schema = SF_Utils.findSchemaByName(ctx.schemas, name);
              <div className="sf-input-container">
                <label> (ReasonReact.string(schema.label)) </label>
                (

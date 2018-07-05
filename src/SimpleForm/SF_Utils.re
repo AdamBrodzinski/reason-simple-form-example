@@ -7,3 +7,6 @@ let getEventValue = (event: formEv) => {
 
 let preventDefault = (event: formEv) =>
   ReactEventRe.Form.preventDefault(event);
+
+let findSchemaByName = (schemas, name) =>
+  List.find((x: SF_Types.schemaItem) => x.name == name, schemas);
