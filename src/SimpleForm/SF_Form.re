@@ -1,3 +1,4 @@
+[%%debugger.chrome];
 open SF_Types;
 
 type action =
@@ -21,13 +22,17 @@ let getInitialState = (schemas: list(schemaItem)) : state => {
     ),
 };
 
+/* input calls wrapper which calls this fn to update form state */
 let handleInputChanged = (name, newText, oldState) => {
-  Js.log("input " ++ name ++ ": " ++ newText);
-  ReasonReact.Update({...oldState, submitted: true});
+  let newInputState =
+    List.map(
+      x => x.name == name ? {name, value: newText, dirty: true} : x,
+      oldState.inputStates,
+    );
+  ReasonReact.Update({...oldState, inputStates: newInputState});
 };
 
-/* let sendInputChanged = (name: string, value: string) => */
-
+/* temp hack to simulate React context until v16 is released */
 module Context =
   ReasonReactContext.CreateContext({
     type state = context;
@@ -36,7 +41,6 @@ module Context =
       formState: getInitialState(hardcodedSchema),
       schemas: hardcodedSchema,
       updateInput: (_, _) => (),
-      /* handleInputChanged, */
     };
   });
 
@@ -51,14 +55,10 @@ let make = (~schema, children) => {
     | InputChanged(name, newText) => handleInputChanged(name, newText, state)
     },
   render: self => {
-    let updateInput = (name, text) => {
-      self.send(InputChanged(name, text));
-      ();
-    };
     let contextValue: context = {
       schemas: schema,
       formState: self.state,
-      updateInput,
+      updateInput: (name, text) => self.send(InputChanged(name, text)),
     };
     Js.log(contextValue);
     <Context.Provider value=contextValue>
