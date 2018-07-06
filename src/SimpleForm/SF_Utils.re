@@ -10,3 +10,6 @@ let preventDefault = (event: formEv) =>
 
 let findSchemaByName = (schemas, name) =>
   List.find((x: SF_Types.schemaItem) => x.name == name, schemas);
+
+let findStateByName = (formStates, name) =>
+  List.find((x: SF_Types.inputState) => x.name == name, formStates);

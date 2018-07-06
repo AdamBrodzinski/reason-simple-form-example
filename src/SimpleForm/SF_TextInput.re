@@ -15,8 +15,15 @@ let make = (~name: string, ~unsafeProps=?, _children) => {
     <SF_Form.Context.Consumer>
       ...(
            ctx => {
-             let input = <input name onChange=(handleChange(ctx, name)) />;
              let schema = SF_Utils.findSchemaByName(ctx.schemas, name);
+             let state =
+               SF_Utils.findStateByName(ctx.formState.inputStates, name);
+             let input =
+               <input
+                 name
+                 onChange=(handleChange(ctx, name))
+                 value=state.value
+               />;
              <div className="sf-input-container">
                <label> (ReasonReact.string(schema.label)) </label>
                (
