@@ -32,6 +32,13 @@ let handleInputChanged = (name, newText, oldState) => {
   ReasonReact.Update({...oldState, inputStates: newInputState});
 };
 
+let handleSubmitAction = state => {
+  let data = {...state, submitted: true};
+  Js.log("do something with data...");
+  Js.log(data);
+  ReasonReact.Update(data);
+};
+
 /* temp hack to simulate React context until v16 is released */
 module Context =
   ReasonReactContext.CreateContext({
@@ -51,7 +58,7 @@ let make = (~schema, children) => {
   initialState: () => getInitialState(schema),
   reducer: (action, state) =>
     switch (action) {
-    | Submitted => ReasonReact.Update({...state, submitted: true})
+    | Submitted => handleSubmitAction(state)
     | InputChanged(name, newText) => handleInputChanged(name, newText, state)
     },
   render: self => {
@@ -60,7 +67,6 @@ let make = (~schema, children) => {
       formState: self.state,
       updateInput: (name, text) => self.send(InputChanged(name, text)),
     };
-    Js.log(contextValue);
     <Context.Provider value=contextValue>
       <div className="sf-form-container">
         (
@@ -71,7 +77,6 @@ let make = (~schema, children) => {
               "onSubmit": event => {
                 SF_Utils.preventDefault(event);
                 self.send(Submitted);
-                Js.log("submit");
               },
             },
             children,

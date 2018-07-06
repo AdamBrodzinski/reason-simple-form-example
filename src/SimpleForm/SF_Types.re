@@ -18,5 +18,4 @@ type context = {
   formState,
   schemas: list(schemaItem),
   updateInput: (string, string) => unit,
-  /* handleInputChanged: (string, formState) => formState, */
 };
