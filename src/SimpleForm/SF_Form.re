@@ -10,6 +10,7 @@ type state = formState;
 let hardcodedSchema: list(schemaItem) = [
   {name: "firstName", label: "First name"},
   {name: "lastName", label: "Last name"},
+  {name: "age", label: "Age"},
 ];
 
 /* create default states for each input based on form schema */

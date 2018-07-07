@@ -6,6 +6,7 @@ open SimpleForm;
 let formSchema: list(schemaItem) = [
   {name: "firstName", label: "First name"},
   {name: "lastName", label: "Last name"},
+  {name: "age", label: "Age"},
 ];
 
 let make = _children => {
@@ -15,6 +16,7 @@ let make = _children => {
       <Form schema=formSchema>
         <TextInput name="firstName" unsafeProps={"autofocus": ""} />
         <TextInput name="lastName" beforeUpdate=String.lowercase />
+        <IntInput name="age" />
         <button type_="submit"> (ReasonReact.string("Submit")) </button>
       </Form>
     </div>,
