@@ -11,13 +11,16 @@ let formSchema: list(schemaItem) = [
 
 let make = _children => {
   ...statelessComponent("MyForm"),
-  render: _self =>
+  render: _self => {
+    let isLoading = false;
+
     <div className="MyForm">
       <Form schema=formSchema>
         <TextInput name="firstName" unsafeProps={"autofocus": ""} />
         <TextInput name="lastName" beforeUpdate=String.lowercase />
         <IntInput name="age" />
-        <Submit text="Submit" />
+        <Submit text="Update" isLoading />
       </Form>
-    </div>,
+    </div>;
+  },
 };
