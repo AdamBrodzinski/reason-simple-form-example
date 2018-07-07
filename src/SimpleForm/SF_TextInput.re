@@ -18,21 +18,15 @@ let make = (~name: string, ~unsafeProps=?, _children) => {
            ctx => {
              let schema = U.findSchemaByName(ctx.schemas, name);
              let state = U.findStateByName(ctx.formState.inputStates, name);
-             let input =
-               <input
-                 name
-                 onChange=(handleChange(ctx, name))
-                 value=state.value
-               />;
              <div className="sf-input-container">
                <label> (ReasonReact.string(schema.label)) </label>
-               (
-                 switch (unsafeProps) {
-                 | Some(props) =>
-                   ReasonReact.cloneElement(input, ~props, [||])
-                 | None => ReasonReact.cloneElement(input, [||])
-                 }
-               )
+               <SF_Input
+                 name
+                 type_="text"
+                 value=state.value
+                 unsafeProps
+                 onChange=(handleChange(ctx, name))
+               />
              </div>;
            }
          )
