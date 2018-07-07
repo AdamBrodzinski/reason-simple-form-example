@@ -21,7 +21,7 @@ let maybeFunc = (optionFunc, defaultFunc) =>
   | None => defaultFunc
   };
 
-let isInteger = value =>
+let isStringInteger = value =>
   switch (int_of_string(value)) {
   | _num => true
   | exception (Failure("int_of_string")) => false

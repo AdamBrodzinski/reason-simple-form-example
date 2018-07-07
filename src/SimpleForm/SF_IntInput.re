@@ -2,19 +2,19 @@ open SF_Types;
 module U = SF_Utils;
 
 type formEvent = ReactEventRe.Form.t;
-type b4u = option(string => string);
+type beforeFn = option(string => string);
 
 let component = ReasonReact.statelessComponent("SF_IntInput");
 
 let handleChange = (ctx, name, beforeUpdate, event: formEvent) => {
   let value = U.getEventValue(event);
   let value2 = beforeUpdate(value);
-  if (value2 == "" || U.isInteger(value2)) {
+  if (value2 == "" || U.isStringInteger(value2)) {
     ctx.updateInput(name, value2);
   };
 };
 
-let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: b4u=?, _ch) => {
+let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: beforeFn=?, _ch) => {
   ...component,
   render: _self =>
     <SF_Form.Context.Consumer>

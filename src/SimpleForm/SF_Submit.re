@@ -1,6 +1,6 @@
 let component = ReasonReact.statelessComponent("MyForm");
 
-let make = (~text="Submit", ~savingText="Saving...", ~isLoading, _ch) => {
+let make = (~text="Submit", ~savingText="Saving...", ~isLoading=false, _ch) => {
   ...component,
   render: _self => {
     let btnType = isLoading ? "button" : "submit";
