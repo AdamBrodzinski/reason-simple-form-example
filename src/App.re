@@ -5,10 +5,5 @@ let text = ReasonReact.string;
 let make = _children => {
   ...component,
   render: _self =>
-    <div className="App">
-      <div className="container">
-        <h2> (text("Login Form")) </h2>
-        <MyForm />
-      </div>
-    </div>,
+    <div className="App"> <div className="container"> <MyForm /> </div> </div>,
 };
