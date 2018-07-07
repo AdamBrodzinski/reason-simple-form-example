@@ -14,7 +14,7 @@ let make = _children => {
     <div className="MyForm">
       <Form schema=formSchema>
         <TextInput name="firstName" unsafeProps={"autofocus": ""} />
-        <TextInput name="lastName" />
+        <TextInput name="lastName" beforeUpdate=String.lowercase />
         <button type_="submit"> (ReasonReact.string("Submit")) </button>
       </Form>
     </div>,
