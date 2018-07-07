@@ -13,3 +13,10 @@ let findSchemaByName = (schemas, name) =>
 
 let findStateByName = (formStates, name) =>
   List.find((x: SF_Types.inputState) => x.name == name, formStates);
+
+/* used for optional react props */
+let maybeFunc = (optionFunc, defaultFunc) =>
+  switch (optionFunc) {
+  | Some(fn) => fn
+  | None => defaultFunc
+  };
