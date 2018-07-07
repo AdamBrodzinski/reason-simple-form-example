@@ -2,11 +2,11 @@
   margin-top: 20px;
 }
 
-.sf-input-container {
+.SF_TextInput-container {
   margin-bottom: 25px;
 }
 
-.sf-input-container label {
+.SF_TextInput-container label {
   display: block;
   margin-bottom: 3px;
   font-size: 0.85em;
@@ -14,7 +14,7 @@
   color: #484848;
 }
 
-.sf-input-container input {
+.SF_TextInput-container input {
   font-size: 1em;
   width: 100%;
   padding: 0.4em;

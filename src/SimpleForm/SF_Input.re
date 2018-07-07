@@ -1,3 +1,4 @@
+/* component to clean up the handling of props and cloning */
 let component = ReasonReact.statelessComponent("SF_Input");
 
 let make = (~name, ~type_, ~value, ~unsafeProps, ~onChange, _children) => {
