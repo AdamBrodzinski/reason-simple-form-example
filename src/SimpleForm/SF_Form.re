@@ -33,13 +33,6 @@ let handleInputChanged = (name, newText, oldState) => {
   ReasonReact.Update({...oldState, inputStates: newInputState});
 };
 
-let handleSubmitAction = state => {
-  let data = {...state, submitted: true};
-  Js.log("do something with data...");
-  Js.log(data);
-  ReasonReact.Update(data);
-};
-
 /* temp hack to simulate React context until v16 is released */
 module Context =
   ReasonReactContext.CreateContext({
@@ -54,36 +47,44 @@ module Context =
 
 let component = ReasonReact.reducerComponent("SF_Form");
 
-let make = (~schema, children) => {
-  ...component,
-  initialState: () => getInitialState(schema),
-  reducer: (action, state) =>
-    switch (action) {
-    | Submitted => handleSubmitAction(state)
-    | InputChanged(name, newText) => handleInputChanged(name, newText, state)
-    },
-  render: self => {
-    let contextValue: context = {
-      schemas: schema,
-      formState: self.state,
-      updateInput: (name, text) => self.send(InputChanged(name, text)),
-    };
-    <Context.Provider value=contextValue>
-      <div className="sf-form-container">
-        (
-          ReasonReact.createDomElement(
-            "form",
-            ~props={
-              "className": "sf-form",
-              "onSubmit": event => {
-                SF_Utils.preventDefault(event);
-                self.send(Submitted);
+let make = (~schema, ~onSubmit, children) => {
+  let handleSubmitAction = (onSubmit, state) => {
+    let data = {...state, submitted: true};
+    onSubmit(data);
+    ReasonReact.Update(data);
+  };
+
+  {
+    ...component,
+    initialState: () => getInitialState(schema),
+    reducer: (action, state) =>
+      switch (action) {
+      | Submitted => handleSubmitAction(onSubmit, state)
+      | InputChanged(name, newTxt) => handleInputChanged(name, newTxt, state)
+      },
+    render: self => {
+      let contextValue: context = {
+        schemas: schema,
+        formState: self.state,
+        updateInput: (name, text) => self.send(InputChanged(name, text)),
+      };
+      <Context.Provider value=contextValue>
+        <div className="sf-form-container">
+          (
+            ReasonReact.createDomElement(
+              "form",
+              ~props={
+                "className": "sf-form",
+                "onSubmit": event => {
+                  SF_Utils.preventDefault(event);
+                  self.send(Submitted);
+                },
               },
-            },
-            children,
+              children,
+            )
           )
-        )
-      </div>
-    </Context.Provider>;
-  },
+        </div>
+      </Context.Provider>;
+    },
+  };
 };
