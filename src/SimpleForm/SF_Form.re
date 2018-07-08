@@ -30,13 +30,11 @@ module Context =
 let component = ReasonReact.reducerComponent("SF_Form");
 
 let make = (~schema, ~onSubmit, children) => {
-  let handleInputChanged = (name, newText, oldState) => {
-    let newInputState =
-      List.map(
-        x => x.name == name ? {name, value: newText, dirty: true} : x,
-        oldState.inputStates,
-      );
-    ReasonReact.Update({...oldState, inputStates: newInputState});
+  let handleInputChanged = (name, value, oldState) => {
+    let newInputStates =
+      oldState.inputStates
+      |> List.map(x => x.name == name ? {name, value, dirty: true} : x);
+    ReasonReact.Update({...oldState, inputStates: newInputStates});
   };
 
   let handleSubmitAction = (onSubmit, state) =>
