@@ -1,5 +1,4 @@
 [%bs.raw {|require('./SimpleForm/simple-form.css')|}];
-open ViewUtils;
 open SF_Types;
 open SimpleForm;
 

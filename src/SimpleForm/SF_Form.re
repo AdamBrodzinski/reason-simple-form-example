@@ -23,16 +23,6 @@ let getInitialState = (schemas: list(schemaItem)) : state => {
     ),
 };
 
-/* input calls wrapper which calls this fn to update form state */
-let handleInputChanged = (name, newText, oldState) => {
-  let newInputState =
-    List.map(
-      x => x.name == name ? {name, value: newText, dirty: true} : x,
-      oldState.inputStates,
-    );
-  ReasonReact.Update({...oldState, inputStates: newInputState});
-};
-
 /* temp hack to simulate React context until v16 is released */
 module Context =
   ReasonReactContext.CreateContext({
@@ -48,11 +38,23 @@ module Context =
 let component = ReasonReact.reducerComponent("SF_Form");
 
 let make = (~schema, ~onSubmit, children) => {
-  let handleSubmitAction = (onSubmit, state) => {
-    let data = {...state, submitted: true};
-    onSubmit(data);
-    ReasonReact.Update(data);
+  let handleInputChanged = (name, newText, oldState) => {
+    let newInputState =
+      List.map(
+        x => x.name == name ? {name, value: newText, dirty: true} : x,
+        oldState.inputStates,
+      );
+    ReasonReact.Update({...oldState, inputStates: newInputState});
   };
+
+  let handleSubmitAction = (onSubmit, state) =>
+    ReasonReact.UpdateWithSideEffects(
+      {...state, submitted: true},
+      self => {
+        onSubmit(self.state);
+        ();
+      },
+    );
 
   {
     ...component,
