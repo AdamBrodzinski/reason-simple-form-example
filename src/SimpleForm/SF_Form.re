@@ -2,6 +2,7 @@
 open SF_Types;
 
 type action =
+  | Initialized(formState)
   | Submitted
   | InputChanged(string, string);
 
@@ -15,6 +16,7 @@ let hardcodedSchema: list(schemaItem) = [
 
 /* create default states for each input based on form schema */
 let getInitialState = (schemas: list(schemaItem)) : state => {
+  initialized: false,
   submitted: false,
   inputStates:
     List.map(
@@ -58,9 +60,14 @@ let make = (~schema, ~onSubmit, children) => {
 
   {
     ...component,
+    didMount: self => {
+      let newState = {...self.state, initialized: true};
+      self.send(Initialized(newState));
+    },
     initialState: () => getInitialState(schema),
     reducer: (action, state) =>
       switch (action) {
+      | Initialized(newState) => ReasonReact.Update(newState)
       | Submitted => handleSubmitAction(onSubmit, state)
       | InputChanged(name, newTxt) => handleInputChanged(name, newTxt, state)
       },
@@ -70,23 +77,25 @@ let make = (~schema, ~onSubmit, children) => {
         formState: self.state,
         updateInput: (name, text) => self.send(InputChanged(name, text)),
       };
-      <Context.Provider value=contextValue>
-        <div className="sf-form-container">
-          (
-            ReasonReact.createDomElement(
-              "form",
-              ~props={
-                "className": "sf-form",
-                "onSubmit": event => {
-                  SF_Utils.preventDefault(event);
-                  self.send(Submitted);
+      self.state.initialized ?
+        <Context.Provider value=contextValue>
+          <div className="sf-form-container">
+            (
+              ReasonReact.createDomElement(
+                "form",
+                ~props={
+                  "className": "sf-form",
+                  "onSubmit": event => {
+                    SF_Utils.preventDefault(event);
+                    self.send(Submitted);
+                  },
                 },
-              },
-              children,
+                children,
+              )
             )
-          )
-        </div>
-      </Context.Provider>;
+          </div>
+        </Context.Provider> :
+        ReasonReact.null;
     },
   };
 };

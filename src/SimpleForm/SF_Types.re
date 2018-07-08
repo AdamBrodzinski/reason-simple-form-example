@@ -11,6 +11,7 @@ type inputState = {
 
 type formState = {
   submitted: bool,
+  initialized: bool,
   inputStates: list(inputState),
 };
 
