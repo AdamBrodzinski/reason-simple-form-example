@@ -8,21 +8,11 @@ type action =
 
 type state = formState;
 
-let hardcodedSchema: list(schemaItem) = [
-  {name: "firstName", label: "First name"},
-  {name: "lastName", label: "Last name"},
-  {name: "age", label: "Age"},
-];
-
 /* create default states for each input based on form schema */
-let getInitialState = (schemas: list(schemaItem)) : state => {
+let getInitialState = () : formState => {
   initialized: false,
   submitted: false,
-  inputStates:
-    List.map(
-      (x: schemaItem) => {name: x.name, value: "", dirty: false},
-      schemas,
-    ),
+  inputStates: [],
 };
 
 /* temp hack to simulate React context until v16 is released */
@@ -31,8 +21,8 @@ module Context =
     type state = context;
     let name = "FormContext";
     let defaultValue: context = {
-      formState: getInitialState(hardcodedSchema),
-      schemas: hardcodedSchema,
+      formState: getInitialState(),
+      schemas: [],
       updateInput: (_, _) => (),
     };
   });
@@ -61,10 +51,16 @@ let make = (~schema, ~onSubmit, children) => {
   {
     ...component,
     didMount: self => {
-      let newState = {...self.state, initialized: true};
+      let inputStates =
+        List.map(
+          (x: schemaItem) => {name: x.name, value: "", dirty: true},
+          schema,
+        );
+
+      let newState = {...self.state, initialized: true, inputStates};
       self.send(Initialized(newState));
     },
-    initialState: () => getInitialState(schema),
+    initialState: () => getInitialState(),
     reducer: (action, state) =>
       switch (action) {
       | Initialized(newState) => ReasonReact.Update(newState)
@@ -77,7 +73,7 @@ let make = (~schema, ~onSubmit, children) => {
         formState: self.state,
         updateInput: (name, text) => self.send(InputChanged(name, text)),
       };
-      self.state.initialized ?
+      List.length(self.state.inputStates) > 0 ?
         <Context.Provider value=contextValue>
           <div className="sf-form-container">
             (
