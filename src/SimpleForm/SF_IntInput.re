@@ -19,21 +19,24 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: beforeFn=?, _ch) => {
   render: _self =>
     <SF_Form.Context.Consumer>
       ...(
-           ctx => {
-             let schema = U.findSchemaByName(ctx.schemas, name);
-             let state = U.findStateByName(ctx.formState.inputStates, name);
-             let beforeUpdate = U.maybeFunc(beforeUpdate, x => x);
-             <div className="SF_IntInput-container">
-               <label> (ReasonReact.string(schema.label)) </label>
-               <SF_Input
-                 name
-                 type_="text"
-                 value=state.value
-                 unsafeProps
-                 onChange=(handleChange(ctx, name, beforeUpdate))
-               />
-             </div>;
-           }
+           ctx =>
+             if (List.length(ctx.schemas) > 0) {
+               let schema = U.findSchemaByName(ctx.schemas, name);
+               let state = U.findStateByName(ctx.formState.inputStates, name);
+               let beforeUpdate = U.maybeFunc(beforeUpdate, x => x);
+               <div className="SF_IntInput-container">
+                 <label> (ReasonReact.string(schema.label)) </label>
+                 <SF_Input
+                   name
+                   type_="text"
+                   value=state.value
+                   unsafeProps
+                   onChange=(handleChange(ctx, name, beforeUpdate))
+                 />
+               </div>;
+             } else {
+               ReasonReact.null;
+             }
          )
     </SF_Form.Context.Consumer>,
 };
