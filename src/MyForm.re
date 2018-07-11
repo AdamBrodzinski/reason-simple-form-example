@@ -19,7 +19,7 @@ let formSchema: list(schemaItem) = [
 let make = _children => {
   let handleSubmit = (formState, self) => {
     Js.log("Submit form");
-    Js.log(formState);
+    Js.log(formState.inputStates |> Array.of_list);
     self.ReasonReact.send(Loaded);
   };
 
