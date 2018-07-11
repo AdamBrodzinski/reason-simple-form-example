@@ -10,10 +10,14 @@ type action =
 
 let component = ReasonReact.reducerComponent("MyForm");
 
-let formSchema: list(schemaItem) = [
-  {name: "firstName", label: "First name"},
-  {name: "lastName", label: "Last name"},
-  {name: "age", label: "Age"},
+let formSchema = [
+  {name: "firstName", label: "First name", validations: [Required]},
+  {
+    name: "lastName",
+    label: "Last name",
+    validations: [] /*Required, Min(3), Max(10)*/,
+  },
+  {name: "age", label: "Age", validations: []},
 ];
 
 let make = _children => {
@@ -34,7 +38,7 @@ let make = _children => {
     render: self =>
       <div className="MyForm">
         <Form schema=formSchema onSubmit=(self.handle(handleSubmit))>
-          <TextInput name="firstName" unsafeProps={"autofocus": ""} />
+          <TextInput name="firstName" />
           <TextInput name="lastName" beforeUpdate=String.lowercase />
           <IntInput name="age" />
           <Submit text="Update" isLoading=self.state.loading />

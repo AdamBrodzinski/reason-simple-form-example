@@ -16,8 +16,10 @@ let getInitialState = () : formState => {
 };
 
 let createInputStatesFromSchema = schema : list(inputState) =>
-  schema
-  |> List.map((x: schemaItem) => {name: x.name, value: "", dirty: true});
+  List.map(
+    (x: schemaItem) => {name: x.name, valid: false, value: "", dirty: true},
+    schema,
+  );
 
 /* temp hack to simulate React context until v16 is released */
 module Context =
@@ -35,9 +37,10 @@ let component = ReasonReact.reducerComponent("SF_Form");
 
 let make = (~schema: list(schemaItem), ~onSubmit, children) => {
   let handleInputChanged = (name, value, oldState) => {
+    let valid = false;
     let newInputStates =
       oldState.inputStates
-      |> List.map(x => x.name == name ? {name, value, dirty: true} : x);
+      |> List.map(x => x.name == name ? {name, value, valid, dirty: true} : x);
     ReasonReact.Update({...oldState, inputStates: newInputStates});
   };
 
@@ -53,6 +56,7 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
   {
     ...component,
     didMount: self => {
+      /* initialize state lazily for context library */
       let inputStates = createInputStatesFromSchema(schema);
       let newState = {...self.state, initialized: true, inputStates};
       self.send(Initialized(newState));
