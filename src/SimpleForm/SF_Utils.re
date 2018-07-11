@@ -21,6 +21,9 @@ let maybeFunc = (optionFunc, defaultFunc) =>
   | None => defaultFunc
   };
 
+/**  Determine if a string will parse into an
+     Int without throwing an exception
+ */
 let isStringInteger = value =>
   switch (int_of_string(value)) {
   | _num => true
