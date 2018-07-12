@@ -40,8 +40,8 @@ let isStringInteger = value =>
 /* validations */
 
 let validateRequired = (iState: inputState, iSchema: schemaItem) => {
-  let res = iState.value |> String.trim |> String.length > 0;
-  ("required", res);
+  let isValid = iState.value |> String.trim |> String.length > 0;
+  (isValid, "This field is required.");
 };
 
 let validateInput = (iSchema: schemaItem, iState: inputState) =>
@@ -60,5 +60,5 @@ let validateInput = (iSchema: schemaItem, iState: inputState) =>
 let inputIsValid = (iSchema, iState) =>
   validateInput(iSchema, iState)
   |> inspect
-  |> List.filter(((_t, b)) => b == false)
+  |> List.filter(((b, _msg)) => b == false)
   |> List.length == 0;
