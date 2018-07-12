@@ -8,6 +8,12 @@ type validations =
  | Min(int)
  | Max(int); */
 
+type validationResult = {
+  isValid: bool,
+  kind: string,
+  message: string,
+};
+
 /** Represents the schema for a single input */
 type schemaItem = {
   name: string,
