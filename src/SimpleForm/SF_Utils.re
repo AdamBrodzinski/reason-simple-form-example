@@ -1,4 +1,11 @@
+open SF_Types;
 type formEv = ReactEventRe.Form.t;
+
+/** print out contents and then return it */
+let inspect = x => {
+  Js.log(x);
+  x;
+};
 
 let getEventValue = (event: formEv) => {
   let target = ReactEventRe.Form.target(event);
@@ -29,3 +36,29 @@ let isStringInteger = value =>
   | _num => true
   | exception (Failure("int_of_string")) => false
   };
+
+/* validations */
+
+let validateRequired = (iState: inputState, iSchema: schemaItem) => {
+  let res = iState.value |> String.trim |> String.length > 0;
+  ("required", res);
+};
+
+let validateInput = (iSchema: schemaItem, iState: inputState) =>
+  switch (iSchema.validations) {
+  | [] => []
+  | _ =>
+    iSchema.validations
+    |> List.map(validateVariant =>
+         switch (validateVariant) {
+         | Required => validateRequired(iState, iSchema)
+         | Email => validateRequired(iState, iSchema)
+         }
+       )
+  };
+
+let inputIsValid = (iSchema, iState) =>
+  validateInput(iSchema, iState)
+  |> inspect
+  |> List.filter(((_t, b)) => b == false)
+  |> List.length == 0;

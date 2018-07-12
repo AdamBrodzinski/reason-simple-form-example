@@ -2,10 +2,11 @@
 type validateFunc = string => bool;
 
 type validations =
-  | Required;
-/* | Email
-   | Min(int)
-   | Max(int); */
+  | Required
+  | Email;
+/*
+ | Min(int)
+ | Max(int); */
 
 /** Represents the schema for a single input */
 type schemaItem = {

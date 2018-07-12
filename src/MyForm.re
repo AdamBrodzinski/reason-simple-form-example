@@ -39,8 +39,10 @@ let make = _children => {
       <div className="MyForm">
         <Form schema=formSchema onSubmit=(self.handle(handleSubmit))>
           <TextInput name="firstName" />
-          <TextInput name="lastName" beforeUpdate=String.lowercase />
-          <IntInput name="age" />
+          /*
+           <TextInput name="lastName" beforeUpdate=String.lowercase />
+           <IntInput name="age" />
+           */
           <Submit text="Update" isLoading=self.state.loading />
         </Form>
       </div>,

@@ -15,11 +15,14 @@ let getInitialState = () : formState => {
   inputStates: [],
 };
 
-let createInputStatesFromSchema = schema : list(inputState) =>
-  List.map(
-    (x: schemaItem) => {name: x.name, valid: false, value: "", dirty: true},
-    schema,
-  );
+let createInputStatesFromSchema = schemas : list(inputState) =>
+  schemas
+  |> List.map((schema: schemaItem) => {
+       let empty = {name: schema.name, valid: false, value: "", dirty: false};
+       let valid = false;
+       /* SF_Utils.validateInput(schema, empty) |> SF_Utils.containsFalse; */
+       {...empty, valid};
+     });
 
 /* temp hack to simulate React context until v16 is released */
 module Context =
