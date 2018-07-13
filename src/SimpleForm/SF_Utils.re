@@ -39,12 +39,13 @@ let isStringInteger = value =>
 
 /* validations */
 
-let validateRequired = (iState: inputState, iSchema: schemaItem) => {
+let validateRequired = (iState, _iSchema) => {
   let isValid = iState.value |> String.trim |> String.length > 0;
   {isValid, kind: "required", message: "This field is required"};
 };
 
-let validateInput = (iSchema: schemaItem, iState: inputState) =>
+let validateInput =
+    (iSchema: schemaItem, iState: inputState, _fState: formState) =>
   switch (iSchema.validations) {
   | [] => []
   | _ =>
@@ -57,8 +58,8 @@ let validateInput = (iSchema: schemaItem, iState: inputState) =>
        )
   };
 
-let inputIsValid = (iSchema, iState) =>
-  validateInput(iSchema, iState)
+let inputIsValid = (iSchema, iState, formState) =>
+  validateInput(iSchema, iState, formState)
   |> inspect
   |> List.filter(v => v.isValid == false)
   |> List.length == 0;
