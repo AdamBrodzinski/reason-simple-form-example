@@ -39,9 +39,16 @@ let isStringInteger = value =>
 
 /* validations */
 
-let validateRequired = (iState, _iSchema) => {
+let validateRequired = iState => {
   let isValid = iState.value |> String.trim |> String.length > 0;
   {isValid, kind: "required", message: "This field is required"};
+};
+
+let validateEmail = iState => {
+  /* minimal match: chars before @ chars after and a period */
+  let regex = [%re {|/.+@.+\..+/i|}];
+  let isValid = Js.Re.test(iState.value, regex);
+  {isValid, kind: "email", message: "A valid email is required"};
 };
 
 let validateInput =
@@ -52,14 +59,13 @@ let validateInput =
     iSchema.validations
     |> List.map(validateVariant =>
          switch (validateVariant) {
-         | Required => validateRequired(iState, iSchema)
-         | Email => validateRequired(iState, iSchema)
+         | Required => validateRequired(iState)
+         | Email => validateEmail(iState)
          }
        )
   };
 
 let inputIsValid = (iSchema, iState, formState) =>
   validateInput(iSchema, iState, formState)
-  |> inspect
   |> List.filter(v => v.isValid == false)
   |> List.length == 0;

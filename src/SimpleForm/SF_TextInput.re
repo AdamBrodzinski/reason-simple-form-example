@@ -24,7 +24,6 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: b4u=?, _ch) => {
                /* before action is called to pre process value */
                let beforeUpdate = U.maybeFunc(beforeUpdate, x => x);
                let isValid = U.inputIsValid(schema, state, ctx.formState);
-               Js.log(isValid);
                <div className="SF_TextInput-container">
                  <label> (ReasonReact.string(schema.label)) </label>
                  <div>
