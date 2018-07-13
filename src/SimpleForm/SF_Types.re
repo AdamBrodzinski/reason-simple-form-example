@@ -3,7 +3,8 @@ type validateFunc = string => bool;
 
 type validations =
   | Required
-  | Email;
+  | Email
+  | Regex(Js.Re.t, string);
 /*
  | Min(int)
  | Max(int); */

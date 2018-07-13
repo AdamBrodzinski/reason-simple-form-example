@@ -51,6 +51,11 @@ let validateEmail = iState => {
   {isValid, kind: "email", message: "A valid email is required"};
 };
 
+let validateRegex = (iState, regex: Js.Re.t, msg) => {
+  let isValid = Js.Re.test(iState.value, regex);
+  {isValid, kind: "regex", message: msg};
+};
+
 let validateInput =
     (iSchema: schemaItem, iState: inputState, _fState: formState) =>
   switch (iSchema.validations) {
@@ -61,11 +66,13 @@ let validateInput =
          switch (validateVariant) {
          | Required => validateRequired(iState)
          | Email => validateEmail(iState)
+         | Regex(pat, msg) => validateRegex(iState, pat, msg)
          }
        )
   };
 
 let inputIsValid = (iSchema, iState, formState) =>
   validateInput(iSchema, iState, formState)
+  /* |> inspect */
   |> List.filter(v => v.isValid == false)
   |> List.length == 0;
