@@ -1,5 +1,5 @@
 open SF_Types;
-module U = SF_Utils;
+module U = SimpleForm_Utils;
 module V = SimpleForm_Validate;
 
 type formEvent = ReactEventRe.Form.t;

@@ -1,5 +1,6 @@
 [%%debugger.chrome];
 open SF_Types;
+module U = SimpleForm_Utils;
 
 type action =
   | Initialized(formState)
@@ -83,7 +84,7 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
                 ~props={
                   "className": "sf-form",
                   "onSubmit": event => {
-                    SF_Utils.preventDefault(event);
+                    U.preventDefault(event);
                     self.send(Submitted);
                   },
                 },

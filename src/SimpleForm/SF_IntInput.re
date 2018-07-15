@@ -1,5 +1,5 @@
 open SF_Types;
-module U = SF_Utils;
+module U = SimpleForm_Utils;
 
 type formEvent = ReactEventRe.Form.t;
 type beforeFn = option(string => string);
