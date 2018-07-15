@@ -11,7 +11,11 @@ type action =
 let component = ReasonReact.reducerComponent("MyForm");
 
 let formSchema = [
-  {name: "firstName", label: "First name", validations: [Email(None)]},
+  {
+    name: "firstName",
+    label: "First name",
+    validations: [Required, Min(2), Max(5)],
+  },
   {name: "lastName", label: "Last name", validations: []},
   {name: "age", label: "Age", validations: []},
 ];
