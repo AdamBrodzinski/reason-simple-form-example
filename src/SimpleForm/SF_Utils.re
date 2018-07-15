@@ -44,11 +44,11 @@ let validateRequired = iState => {
   {isValid, kind: "required", message: "This field is required"};
 };
 
-let validateEmail = iState => {
+let validateEmail = (iState, msg) => {
   /* minimal match: chars before @ chars after and a period */
   let regex = [%re {|/.+@.+\..+/i|}];
   let isValid = Js.Re.test(iState.value, regex);
-  {isValid, kind: "email", message: "A valid email is required"};
+  {isValid, kind: "email", message: msg};
 };
 
 let validateRegex = (iState, regex: Js.Re.t, msg) => {
@@ -65,7 +65,8 @@ let validateInput =
     |> List.map(validateVariant =>
          switch (validateVariant) {
          | Required => validateRequired(iState)
-         | Email => validateEmail(iState)
+         | Email => validateEmail(iState, "A valid email is required")
+         | EmailWithMsg(msg) => validateEmail(iState, msg)
          | Regex(pat, msg) => validateRegex(iState, pat, msg)
          }
        )
