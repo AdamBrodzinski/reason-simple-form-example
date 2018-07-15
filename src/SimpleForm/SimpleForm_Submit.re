@@ -1,12 +1,12 @@
-let component = ReasonReact.statelessComponent("MyForm");
+let component = ReasonReact.statelessComponent("SimpleForm_Submit");
 
 let make = (~text="Submit", ~savingText="Saving...", ~isLoading=false, _ch) => {
   ...component,
   render: _self => {
     let btnType = isLoading ? "button" : "submit";
     let btnText = isLoading ? savingText : text;
-    <div className="SF_Submit-container">
-      <button type_=btnType className="SF_Submit">
+    <div className="SimpleForm_Submit-container">
+      <button type_=btnType className="SimpleForm_Submit">
         (ReasonReact.string(btnText))
       </button>
     </div>;

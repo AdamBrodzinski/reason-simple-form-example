@@ -1,3 +1,5 @@
+module T = SimpleForm_Types;
+
 type formEv = ReactEventRe.Form.t;
 
 /** print out contents and then return it */
@@ -15,10 +17,10 @@ let preventDefault = (event: formEv) =>
   ReactEventRe.Form.preventDefault(event);
 
 let findSchemaByName = (schemas, name) =>
-  List.find((x: SF_Types.schemaItem) => x.name == name, schemas);
+  List.find((x: T.schemaItem) => x.name == name, schemas);
 
 let findStateByName = (formStates, name) =>
-  List.find((x: SF_Types.inputState) => x.name == name, formStates);
+  List.find((x: T.inputState) => x.name == name, formStates);
 
 /* used for optional react props */
 let maybeFunc = (optionFunc, defaultFunc) =>

@@ -1,40 +1,32 @@
-open SF_Types;
+open SimpleForm_Types;
 module U = SimpleForm_Utils;
-module V = SimpleForm_Validate;
 
 type formEvent = ReactEventRe.Form.t;
-type b4u = option(string => string);
+type beforeFn = option(string => string);
 
-let component = ReasonReact.statelessComponent("SF_TextInput");
+let component = ReasonReact.statelessComponent("SimpleForm_IntInput");
 
 let handleChange = (ctx, name, beforeUpdate, event: formEvent) => {
   let value = U.getEventValue(event);
   let value2 = beforeUpdate(value);
-  ctx.updateInput(name, value2);
+  if (value2 == "" || U.isStringInteger(value2)) {
+    ctx.updateInput(name, value2);
+  };
 };
 
-let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: b4u=?, _ch) => {
+let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: beforeFn=?, _ch) => {
   ...component,
   render: _self =>
-    <SF_Form.Context.Consumer>
+    <SimpleForm_Form.Context.Consumer>
       ...(
            ctx =>
              if (List.length(ctx.schemas) > 0) {
                let schema = U.findSchemaByName(ctx.schemas, name);
                let state = U.findStateByName(ctx.formState.inputStates, name);
-               /* before action is called to pre process value */
                let beforeUpdate = U.maybeFunc(beforeUpdate, x => x);
-               let isValid = V.inputIsValid(schema, state, ctx.formState);
-               <div className="SF_TextInput-container">
+               <div className="SimpleForm_IntInput-container">
                  <label> (ReasonReact.string(schema.label)) </label>
-                 <div>
-                   (
-                     isValid ?
-                       ReasonReact.string("Valid") :
-                       ReasonReact.string("Invalid")
-                   )
-                 </div>
-                 <SF_Input
+                 <SimpleForm_Input
                    name
                    type_="text"
                    value=state.value
@@ -46,5 +38,5 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: b4u=?, _ch) => {
                ReasonReact.null;
              }
          )
-    </SF_Form.Context.Consumer>,
+    </SimpleForm_Form.Context.Consumer>,
 };

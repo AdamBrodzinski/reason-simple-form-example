@@ -1,0 +1,33 @@
+.SimpleForm_Debug {
+  margin-top: 20px;
+}
+
+.SimpleForm_Submit {
+  padding: 7px 12px;
+  font-size: 15px;
+  cursor: pointer;
+  background: #337ab7;
+  border: none;
+  color: white;
+}
+
+.SimpleForm_TextInput-container,
+.SimpleForm_IntInput-container {
+  margin-bottom: 20px;
+}
+
+.SimpleForm_TextInput-container label,
+.SimpleForm_IntInput-container label {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #484848;
+}
+
+.SimpleForm_TextInput-container input,
+.SimpleForm_IntInput-container input {
+  font-size: 1em;
+  width: 100%;
+  padding: 0.4em;
+}

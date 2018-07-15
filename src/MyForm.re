@@ -1,5 +1,4 @@
-[%bs.raw {|require('./SimpleForm/simple-form.css')|}];
-open SF_Types;
+[%bs.raw {|require('./SimpleForm/SimpleForm.css')|}];
 open SimpleForm;
 
 type state = {loading: bool};
@@ -10,7 +9,7 @@ type action =
 
 let component = ReasonReact.reducerComponent("MyForm");
 
-let formSchema = [
+let formSchema: list(SimpleForm_Types.schemaItem) = [
   {
     name: "firstName",
     label: "First name",
@@ -21,7 +20,7 @@ let formSchema = [
 ];
 
 let make = _children => {
-  let handleSubmit = (formState, self) => {
+  let handleSubmit = (formState: SimpleForm_Types.formState, self) => {
     Js.log("Submit form");
     Js.log(formState.inputStates |> Array.of_list);
     self.ReasonReact.send(Loaded);
@@ -39,10 +38,8 @@ let make = _children => {
       <div className="MyForm">
         <Form schema=formSchema onSubmit=(self.handle(handleSubmit))>
           <TextInput name="firstName" />
-          /*
-           <TextInput name="lastName" beforeUpdate=String.lowercase />
-           <IntInput name="age" />
-           */
+          <TextInput name="lastName" beforeUpdate=String.lowercase />
+          <IntInput name="age" />
           <Submit text="Update" isLoading=self.state.loading />
         </Form>
       </div>,

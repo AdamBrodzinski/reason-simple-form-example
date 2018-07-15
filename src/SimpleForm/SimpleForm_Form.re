@@ -1,5 +1,5 @@
 [%%debugger.chrome];
-open SF_Types;
+open SimpleForm_Types;
 module U = SimpleForm_Utils;
 
 type action =
@@ -34,7 +34,7 @@ module Context =
     };
   });
 
-let component = ReasonReact.reducerComponent("SF_Form");
+let component = ReasonReact.reducerComponent("SimpleForm_Form");
 
 let make = (~schema: list(schemaItem), ~onSubmit, children) => {
   let handleInputChanged = (name, value, oldState) => {
@@ -77,12 +77,12 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
       };
       List.length(self.state.inputStates) > 0 ?
         <Context.Provider value=contextValue>
-          <div className="sf-form-container">
+          <div className="SimpleForm_Form-container">
             (
               ReasonReact.createDomElement(
                 "form",
                 ~props={
-                  "className": "sf-form",
+                  "className": "SimpleForm_Form",
                   "onSubmit": event => {
                     U.preventDefault(event);
                     self.send(Submitted);

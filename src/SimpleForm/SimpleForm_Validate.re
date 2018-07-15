@@ -1,4 +1,4 @@
-open SF_Types;
+open SimpleForm_Types;
 
 let validateRequired = iState => {
   let isValid = iState.value |> String.trim |> String.length > 0;
