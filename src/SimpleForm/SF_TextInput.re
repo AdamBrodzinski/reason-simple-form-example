@@ -1,5 +1,6 @@
 open SF_Types;
 module U = SF_Utils;
+module V = SimpleForm_Validate;
 
 type formEvent = ReactEventRe.Form.t;
 type b4u = option(string => string);
@@ -23,7 +24,7 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: b4u=?, _ch) => {
                let state = U.findStateByName(ctx.formState.inputStates, name);
                /* before action is called to pre process value */
                let beforeUpdate = U.maybeFunc(beforeUpdate, x => x);
-               let isValid = U.inputIsValid(schema, state, ctx.formState);
+               let isValid = V.inputIsValid(schema, state, ctx.formState);
                <div className="SF_TextInput-container">
                  <label> (ReasonReact.string(schema.label)) </label>
                  <div>

@@ -5,10 +5,9 @@ type validations =
   | Required
   | Email
   | EmailWithMsg(string)
-  | Regex(Js.Re.t, string);
-/*
- | Min(int)
- | Max(int); */
+  | Regex(Js.Re.t, string)
+  | Min(int)
+  | Max(int);
 
 type validationResult = {
   isValid: bool,
