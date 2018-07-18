@@ -19,12 +19,12 @@ let validateRegex = (iState, regex: Js.Re.t, msg) => {
 
 let validateMin = (iState, amount, msg) => {
   let isValid = String.length(iState.value) >= amount;
-  {isValid, kind: "regex", message: msg};
+  {isValid, kind: "min", message: msg};
 };
 
 let validateMax = (iState, amount, msg) => {
   let isValid = String.length(iState.value) <= amount;
-  {isValid, kind: "regex", message: msg};
+  {isValid, kind: "max", message: msg};
 };
 
 let validateInput =
@@ -45,7 +45,7 @@ let validateInput =
            let msg = string_of_int(amt) ++ " or more characters are required";
            validateMin(iState, amt, msg);
          | Max(amt) =>
-           let msg = string_of_int(amt) ++ " or more characters are required";
+           let msg = string_of_int(amt) ++ " or less characters are required";
            validateMax(iState, amt, msg);
          }
        )
