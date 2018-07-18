@@ -2,18 +2,17 @@ open SimpleForm_Types;
 module U = SimpleForm_Utils;
 module V = SimpleForm_Validate;
 
-type formEvent = ReactEventRe.Form.t;
-type b4u = option(string => string);
-
 let component = ReasonReact.statelessComponent("SimpleForm_TextInput");
 
-let handleChange = (ctx, name, beforeUpdate, event: formEvent) => {
+let handleChange = (ctx, name, beforeUpdate, event) => {
   let value = U.getEventValue(event);
   let value2 = beforeUpdate(value);
   ctx.updateInput(name, value2);
 };
 
-let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: b4u=?, _ch) => {
+let handleBlur = (ctx, name, _event) => ctx.sendInputBlur(name);
+
+let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
   ...component,
   render: _self =>
     <SimpleForm_Form.Context.Consumer>
@@ -31,25 +30,13 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: b4u=?, _ch) => {
 
                <div className="SimpleForm_TextInput-container">
                  <label> (ReasonReact.string(schema.label)) </label>
-                 <div className="SimpleForm_TextInput-error">
-                   (
-                     if (state.dirty) {
-                       switch (errors) {
-                       | [] => ReasonReact.null
-                       | [error] => ReasonReact.string(error.message)
-                       | [firstE, ..._rest] =>
-                         ReasonReact.string(firstE.message)
-                       };
-                     } else {
-                       ReasonReact.string("not dirty");
-                     }
-                   )
-                 </div>
+                 <SimpleForm_ErrorMsg inputState=state errors />
                  <SimpleForm_Input
                    name
                    type_="text"
                    value=state.value
                    unsafeProps
+                   onBlur=(handleBlur(ctx, name))
                    onChange=(handleChange(ctx, name, beforeUpdate))
                  />
                </div>;

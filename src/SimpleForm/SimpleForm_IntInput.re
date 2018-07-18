@@ -14,7 +14,9 @@ let handleChange = (ctx, name, beforeUpdate, event: formEvent) => {
   };
 };
 
-let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: beforeFn=?, _ch) => {
+let handleBlur = (ctx, name, _event) => ctx.sendInputBlur(name);
+
+let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
   ...component,
   render: _self =>
     <SimpleForm_Form.Context.Consumer>
@@ -31,6 +33,7 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: beforeFn=?, _ch) => {
                    type_="text"
                    value=state.value
                    unsafeProps
+                   onBlur=(handleBlur(ctx, name))
                    onChange=(handleChange(ctx, name, beforeUpdate))
                  />
                </div>;

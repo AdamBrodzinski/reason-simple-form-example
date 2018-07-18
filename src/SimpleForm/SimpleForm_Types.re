@@ -39,4 +39,5 @@ type context = {
   formState,
   schemas: list(schemaItem),
   updateInput: (string, string) => unit,
+  sendInputBlur: string => unit,
 };

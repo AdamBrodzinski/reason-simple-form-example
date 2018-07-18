@@ -5,7 +5,8 @@ module U = SimpleForm_Utils;
 type action =
   | Initialized(formState)
   | Submitted
-  | InputChanged(string, string);
+  | InputChanged(string, string)
+  | InputBlurred(string);
 
 type state = formState;
 
@@ -31,6 +32,7 @@ module Context =
       formState: getInitialState(),
       schemas: [],
       updateInput: (_, _) => (),
+      sendInputBlur: _ => (),
     };
   });
 
@@ -41,7 +43,16 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
     let valid = false;
     let newInputStates =
       oldState.inputStates
-      |> List.map(x => x.name == name ? {name, value, valid, dirty: true} : x);
+      |> List.map(x =>
+           x.name == name ? {name, value, valid, dirty: x.dirty} : x
+         );
+    ReasonReact.Update({...oldState, inputStates: newInputStates});
+  };
+
+  let handleInputBlurred = (name, oldState) => {
+    let newInputStates =
+      oldState.inputStates
+      |> List.map(x => x.name == name ? {...x, dirty: true} : x);
     ReasonReact.Update({...oldState, inputStates: newInputStates});
   };
 
@@ -68,12 +79,14 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
       | Initialized(newState) => ReasonReact.Update(newState)
       | Submitted => handleSubmitAction(onSubmit, state)
       | InputChanged(name, newTxt) => handleInputChanged(name, newTxt, state)
+      | InputBlurred(name) => handleInputBlurred(name, state)
       },
     render: self => {
       let contextValue: context = {
         schemas: schema,
         formState: self.state,
         updateInput: (name, text) => self.send(InputChanged(name, text)),
+        sendInputBlur: name => self.send(InputBlurred(name)),
       };
       List.length(self.state.inputStates) > 0 ?
         <Context.Provider value=contextValue>
