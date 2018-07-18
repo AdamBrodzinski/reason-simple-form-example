@@ -18,7 +18,7 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
     <SimpleForm_Form.Context.Consumer>
       ...(
            ctx =>
-             /* if statement hackx around initial context being empty on 1st render */
+             /* if statement to hack around initial context being empty on 1st render */
              if (List.length(ctx.schemas) > 0) {
                let inputStates = ctx.formState.inputStates;
                let inputSchema = U.findSchemaByName(ctx.schemas, name);

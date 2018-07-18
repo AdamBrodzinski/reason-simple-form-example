@@ -1,5 +1,6 @@
 open SimpleForm_Types;
 module U = SimpleForm_Utils;
+module V = SimpleForm_Validate;
 
 type formEvent = ReactEventRe.Form.t;
 type beforeFn = option(string => string);
@@ -22,16 +23,23 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
     <SimpleForm_Form.Context.Consumer>
       ...(
            ctx =>
+             /* if statement to hack around initial context being empty on 1st render */
              if (List.length(ctx.schemas) > 0) {
-               let schema = U.findSchemaByName(ctx.schemas, name);
-               let state = U.findStateByName(ctx.formState.inputStates, name);
+               let inputStates = ctx.formState.inputStates;
+               let inputSchema = U.findSchemaByName(ctx.schemas, name);
+               let inputState = U.findStateByName(inputStates, name);
                let beforeUpdate = U.fallbackFunc(beforeUpdate, x => x);
+               let errors =
+                 V.validateInput(inputSchema, inputState, ctx.formState)
+                 |> List.filter(x => x.isValid == false);
+
                <div className="SimpleForm_IntInput-container">
-                 <label> (ReasonReact.string(schema.label)) </label>
+                 <label> (ReasonReact.string(inputSchema.label)) </label>
+                 <SimpleForm_ErrorMsg inputState errors />
                  <SimpleForm_Input
                    name
                    type_="text"
-                   value=state.value
+                   value=inputState.value
                    unsafeProps
                    onBlur=(handleBlur(ctx, name))
                    onChange=(handleChange(ctx, name, beforeUpdate))
