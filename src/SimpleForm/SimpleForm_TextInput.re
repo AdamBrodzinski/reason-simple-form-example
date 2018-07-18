@@ -19,19 +19,30 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate: b4u=?, _ch) => {
     <SimpleForm_Form.Context.Consumer>
       ...(
            ctx =>
+             /* hack to work around initial context */
              if (List.length(ctx.schemas) > 0) {
                let schema = U.findSchemaByName(ctx.schemas, name);
                let state = U.findStateByName(ctx.formState.inputStates, name);
                /* before action is called to pre process value */
                let beforeUpdate = U.maybeFunc(beforeUpdate, x => x);
-               let isValid = V.inputIsValid(schema, state, ctx.formState);
+               let errors =
+                 V.validateInput(schema, state, ctx.formState)
+                 |> List.filter(x => x.isValid == false);
+
                <div className="SimpleForm_TextInput-container">
                  <label> (ReasonReact.string(schema.label)) </label>
-                 <div>
+                 <div className="SimpleForm_TextInput-error">
                    (
-                     isValid ?
-                       ReasonReact.string("Valid") :
-                       ReasonReact.string("Invalid")
+                     if (state.dirty) {
+                       switch (errors) {
+                       | [] => ReasonReact.null
+                       | [error] => ReasonReact.string(error.message)
+                       | [firstE, ..._rest] =>
+                         ReasonReact.string(firstE.message)
+                       };
+                     } else {
+                       ReasonReact.string("not dirty");
+                     }
                    )
                  </div>
                  <SimpleForm_Input
