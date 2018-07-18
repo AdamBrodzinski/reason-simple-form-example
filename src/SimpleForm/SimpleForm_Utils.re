@@ -23,7 +23,7 @@ let findStateByName = (formStates, name) =>
   List.find((x: T.inputState) => x.name == name, formStates);
 
 /* used for optional react props */
-let maybeFunc = (optionFunc, defaultFunc) =>
+let fallbackFunc = (optionFunc, defaultFunc) =>
   switch (optionFunc) {
   | Some(fn) => fn
   | None => defaultFunc

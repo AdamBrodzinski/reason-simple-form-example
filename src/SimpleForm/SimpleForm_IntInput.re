@@ -25,7 +25,7 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
              if (List.length(ctx.schemas) > 0) {
                let schema = U.findSchemaByName(ctx.schemas, name);
                let state = U.findStateByName(ctx.formState.inputStates, name);
-               let beforeUpdate = U.maybeFunc(beforeUpdate, x => x);
+               let beforeUpdate = U.fallbackFunc(beforeUpdate, x => x);
                <div className="SimpleForm_IntInput-container">
                  <label> (ReasonReact.string(schema.label)) </label>
                  <SimpleForm_Input
