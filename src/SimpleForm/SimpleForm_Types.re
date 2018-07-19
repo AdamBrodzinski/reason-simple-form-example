@@ -1,25 +1,7 @@
-/** used to validate an input using custom logic */
-type validateFunc = string => bool;
-
-type validations =
-  | Required
-  | Email
-  | EmailWithMsg(string)
-  | Regex(Js.Re.t, string)
-  | Min(int)
-  | Max(int);
-
 type validationResult = {
   isValid: bool,
   kind: string,
   message: string,
-};
-
-/** Represents the schema for a single input */
-type schemaItem = {
-  name: string,
-  label: string,
-  validations: list(validations),
 };
 
 type inputState = {
@@ -33,6 +15,25 @@ type formState = {
   submitted: bool,
   initialized: bool,
   inputStates: list(inputState),
+};
+
+/** used to validate an input using custom logic */
+type validateFunc = (inputState, formState) => (bool, string);
+
+type validations =
+  | Required
+  | Email
+  | EmailWithMsg(string)
+  | Regex(Js.Re.t, string)
+  | Min(int)
+  | Max(int)
+  | Func(validateFunc);
+
+/** Represents the schema for a single input */
+type schemaItem = {
+  name: string,
+  label: string,
+  validations: list(validations),
 };
 
 type context = {

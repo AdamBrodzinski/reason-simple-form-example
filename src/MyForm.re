@@ -9,14 +9,16 @@ type action =
 
 let component = ReasonReact.reducerComponent("MyForm");
 
+let age18AndUp = (inputState: SimpleForm_Types.inputState, _formState) => {
+  let num = SimpleForm_Utils.intOfStringOrZero(inputState.value);
+  let isValid = num >= 18;
+  (isValid, "You must be over 18");
+};
+
 let formSchema: list(SimpleForm_Types.schemaItem) = [
-  {
-    name: "firstName",
-    label: "First name",
-    validations: [Required, Min(2), Max(5)],
-  },
+  {name: "firstName", label: "First name", validations: [Min(2), Max(5)]},
   {name: "lastName", label: "Last name", validations: []},
-  {name: "age", label: "Age", validations: []},
+  {name: "age", label: "Age", validations: [Func(age18AndUp)]},
 ];
 
 let make = _children => {

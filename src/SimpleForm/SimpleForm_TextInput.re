@@ -21,11 +21,11 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
                let beforeUpdate = U.fallbackFunc(beforeUpdate, x => x);
                <SimpleForm_TextLikeInput
                  name
+                 castType="string"
+                 inputType="text"
                  onBlur=(handleBlur(ctx, name))
                  onChange=(handleChange(ctx, name, beforeUpdate))
                  className="SimpleForm_TextInput-container"
-                 inputType="text"
-                 castType="string"
                  unsafeProps
                  ctx
                />;

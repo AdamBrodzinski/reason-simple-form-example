@@ -37,3 +37,10 @@ let isStringInteger = value =>
   | _num => true
   | exception (Failure("int_of_string")) => false
   };
+
+/** parses an int but provides a default for empty string */
+let intOfStringOrZero = (x: string) =>
+  switch (String.trim(x)) {
+  | "" => 0
+  | num => int_of_string(num)
+  };

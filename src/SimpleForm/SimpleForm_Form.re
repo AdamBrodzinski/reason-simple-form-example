@@ -40,19 +40,18 @@ let component = ReasonReact.reducerComponent("SimpleForm_Form");
 
 let make = (~schema: list(schemaItem), ~onSubmit, children) => {
   let handleInputChanged = (name, value, oldState) => {
-    let valid = false;
     let newInputStates =
       oldState.inputStates
-      |> List.map(x =>
-           x.name == name ? {name, value, valid, dirty: x.dirty} : x
-         );
+      |> List.map((x: inputState) => x.name == name ? {...x, value} : x);
     ReasonReact.Update({...oldState, inputStates: newInputStates});
   };
 
   let handleInputBlurred = (name, oldState) => {
     let newInputStates =
       oldState.inputStates
-      |> List.map(x => x.name == name ? {...x, dirty: true} : x);
+      |> List.map((x: inputState) =>
+           x.name == name ? {...x, dirty: true} : x
+         );
     ReasonReact.Update({...oldState, inputStates: newInputStates});
   };
 

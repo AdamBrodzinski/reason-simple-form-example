@@ -27,8 +27,13 @@ let validateMax = (iState, amount, msg) => {
   {isValid, kind: "max", message: msg};
 };
 
+let validateWithFunc = (func, iState, formState) => {
+  let (isValid, msg) = func(iState, formState);
+  {isValid, kind: "function", message: msg};
+};
+
 let validateInput =
-    (iSchema: schemaItem, iState: inputState, _fState: formState) =>
+    (iSchema: schemaItem, iState: inputState, formState: formState) =>
   switch (iSchema.validations) {
   | [] => []
   | _ =>
@@ -47,6 +52,7 @@ let validateInput =
          | Max(amt) =>
            let msg = string_of_int(amt) ++ " or less characters are required";
            validateMax(iState, amt, msg);
+         | Func(func) => validateWithFunc(func, iState, formState)
          }
        )
   };
