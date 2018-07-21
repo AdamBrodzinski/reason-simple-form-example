@@ -25,8 +25,8 @@ type validations =
   | Email
   | EmailWithMsg(string)
   | Regex(Js.Re.t, string)
-  | Min(int)
-  | Max(int)
+  | MinLen(int)
+  | MaxLen(int)
   | Func(validateFunc);
 
 /** Represents the schema for a single input */

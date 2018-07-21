@@ -16,8 +16,8 @@ let age18AndUp = (inputState: SimpleForm_Types.inputState, _formState) => {
 };
 
 let formSchema: list(SimpleForm_Types.schemaItem) = [
-  {name: "firstName", label: "First name", validations: [Min(2), Max(5)]},
-  {name: "lastName", label: "Last name", validations: []},
+  {name: "firstName", label: "First name", validations: [MinLen(2)]},
+  {name: "lastName", label: "Last name", validations: [MinLen(2)]},
   {name: "age", label: "Age", validations: [Func(age18AndUp)]},
 ];
 

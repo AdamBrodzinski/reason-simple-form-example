@@ -46,10 +46,10 @@ let validateInput =
            validateEmail(iState, msg);
          | EmailWithMsg(msg) => validateEmail(iState, msg)
          | Regex(pat, msg) => validateRegex(iState, pat, msg)
-         | Min(amt) =>
+         | MinLen(amt) =>
            let msg = string_of_int(amt) ++ " or more characters are required";
            validateMin(iState, amt, msg);
-         | Max(amt) =>
+         | MaxLen(amt) =>
            let msg = string_of_int(amt) ++ " or less characters are required";
            validateMax(iState, amt, msg);
          | Func(func) => validateWithFunc(func, iState, formState)
