@@ -1,6 +1,7 @@
 [%%debugger.chrome];
 open SimpleForm_Types;
 module U = SimpleForm_Utils;
+module V = SimpleForm_Validate;
 
 type action =
   | Initialized(formState)
@@ -43,6 +44,21 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
     let newInputStates =
       oldState.inputStates
       |> List.map((x: inputState) => x.name == name ? {...x, value} : x);
+
+    let newState = {...oldState, inputStates: newInputStates};
+    let inputState = U.findStateByName(newInputStates, name);
+    let inputSchema = U.findSchemaByName(schema, name);
+
+    let errors =
+      V.validateInput(inputSchema, inputState, newState)
+      |> List.filter(x => x.isValid == false);
+
+    let newInputStates =
+      newState.inputStates
+      |> List.map((x: inputState) =>
+           x.name == name ? {...x, valid: List.length(errors) == 0} : x
+         );
+
     ReasonReact.Update({...oldState, inputStates: newInputStates});
   };
 
