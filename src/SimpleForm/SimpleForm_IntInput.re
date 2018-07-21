@@ -4,6 +4,7 @@ module U = SimpleForm_Utils;
 let component = ReasonReact.statelessComponent("SimpleForm_IntInput");
 
 let handleChange = (ctx, name, beforeUpdate, event) => {
+  let beforeUpdate = U.fallbackFunc(beforeUpdate, x => x);
   let value = U.getEventValue(event);
   let value2 = beforeUpdate(value);
   if (value2 == "" || U.isStringInteger(value2)) {
@@ -20,7 +21,6 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
       ...(
            ctx =>
              if (List.length(ctx.schemas) > 0) {
-               let beforeUpdate = U.fallbackFunc(beforeUpdate, x => x);
                <SimpleForm_TextLikeInput
                  name
                  onBlur=(handleBlur(ctx, name))
