@@ -3,12 +3,7 @@ module U = SimpleForm_Utils;
 
 let component = ReasonReact.statelessComponent("SimpleForm_TextInput");
 
-let handleChange = (ctx, name, beforeUpdate, event) => {
-  let beforeUpdate = U.fallbackFunc(beforeUpdate, x => x);
-  let value = U.getEventValue(event);
-  let value2 = beforeUpdate(value);
-  ctx.updateInput(name, value2);
-};
+let handleChange = (ctx, name, value) : unit => ctx.updateInput(name, value);
 
 let handleBlur = (ctx, name, _event) => ctx.sendInputBlur(name);
 
@@ -21,11 +16,12 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
              if (List.length(ctx.schemas) > 0) {
                <SimpleForm_TextLikeInput
                  name
+                 className="SimpleForm_TextInput-container"
                  castType="string"
                  inputType="text"
                  onBlur=(handleBlur(ctx, name))
-                 onChange=(handleChange(ctx, name, beforeUpdate))
-                 className="SimpleForm_TextInput-container"
+                 onChange=(handleChange(ctx, name))
+                 beforeUpdate
                  unsafeProps
                  ctx
                />;

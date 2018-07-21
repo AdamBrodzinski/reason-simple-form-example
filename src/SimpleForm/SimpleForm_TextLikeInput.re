@@ -14,6 +14,7 @@ let make =
       ~unsafeProps,
       ~onBlur,
       ~onChange,
+      ~beforeUpdate,
       _children,
     ) => {
   ...component,
@@ -34,7 +35,14 @@ let make =
             type_=inputType
             name
             value=inputState.value
-            onChange
+            onChange=(
+              event => {
+                let value: string = U.getEventValue(event);
+                let beforeUpdate = U.fallbackFunc(beforeUpdate, x => x);
+                let value2 = beforeUpdate(value);
+                onChange(value2);
+              }
+            )
             onBlur
           />;
         switch (unsafeProps) {
