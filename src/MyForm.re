@@ -22,11 +22,8 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
 ];
 
 let make = _children => {
-  let handleSubmit = (formState: SimpleForm_Types.formState, self) => {
-    Js.log("Submit form");
-    Js.log(formState.inputStates |> Array.of_list);
+  let handleSubmit = (formState: SimpleForm_Types.formState, self) =>
     self.ReasonReact.send(Loaded);
-  };
 
   {
     ...component,
@@ -38,7 +35,8 @@ let make = _children => {
       },
     render: self =>
       <div className="MyForm">
-        <Form schema=formSchema onSubmit=(self.handle(handleSubmit))>
+        <Form
+          schema=formSchema onSubmit=(self.handle(handleSubmit)) debug=true>
           <TextInput name="firstName" />
           <TextInput name="lastName" beforeUpdate=String.lowercase />
           <IntInput name="age" />

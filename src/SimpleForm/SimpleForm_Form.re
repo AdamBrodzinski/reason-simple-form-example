@@ -64,8 +64,11 @@ module Context =
 
 let component = ReasonReact.reducerComponent("SimpleForm_Form");
 
-let make = (~schema: list(schemaItem), ~onSubmit, children) => {
+let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
   let handleInputChanged = (name, value, oldState) => {
+    if (debug) {
+      Js.log("input changed: " ++ name ++ " - " ++ value);
+    };
     let newInputStates =
       oldState.inputStates
       |> List.map((x: inputState) => x.name == name ? {...x, value} : x);
@@ -89,6 +92,10 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
   };
 
   let handleInputBlurred = (name, oldState) => {
+    if (debug) {
+      Js.log("input blurred: " ++ name);
+    };
+
     let newInputStates =
       oldState.inputStates
       |> List.map((x: inputState) =>
@@ -101,6 +108,13 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
     ReasonReact.UpdateWithSideEffects(
       {...state, submitted: true},
       self => {
+        if (debug) {
+          Js.log("submitted: ");
+          Js.log({
+            "submitted": self.state.submitted,
+            "inputStates": self.state.inputStates |> Array.of_list,
+          });
+        };
         onSubmit(self.state);
         ();
       },
