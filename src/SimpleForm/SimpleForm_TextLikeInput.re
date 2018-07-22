@@ -22,13 +22,10 @@ let make =
     let inputStates = ctx.formState.inputStates;
     let inputSchema = U.findSchemaByName(ctx.schemas, name);
     let inputState = U.findStateByName(inputStates, name);
-    let errors =
-      V.validateInput(inputSchema, inputState, ctx.formState)
-      |> List.filter(x => x.isValid == false);
 
     <div className>
       <label> (ReasonReact.string(inputSchema.label)) </label>
-      <SimpleForm_ErrorMsg inputState errors />
+      <SimpleForm_ErrorMsg inputState errors=inputState.errors />
       {
         let input =
           <input

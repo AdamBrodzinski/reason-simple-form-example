@@ -9,6 +9,7 @@ type inputState = {
   value: string,
   valid: bool,
   dirty: bool,
+  errors: list(validationResult),
 };
 
 type formState = {

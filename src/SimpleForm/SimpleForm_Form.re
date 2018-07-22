@@ -21,7 +21,7 @@ let getInitialState = () : formState => {
 let createInputStatesFromSchema = schemas : list(inputState) =>
   schemas
   |> List.map((schema: schemaItem) =>
-       {name: schema.name, valid: true, value: "", dirty: false}
+       {name: schema.name, valid: true, value: "", dirty: false, errors: []}
      );
 
 /* temp hack to simulate React context until v16 is released */
@@ -56,7 +56,8 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
     let newInputStates =
       newState.inputStates
       |> List.map((x: inputState) =>
-           x.name == name ? {...x, valid: List.length(errors) == 0} : x
+           x.name == name ?
+             {...x, valid: List.length(inputState.errors) == 0, errors} : x
          );
 
     ReasonReact.Update({...oldState, inputStates: newInputStates});
