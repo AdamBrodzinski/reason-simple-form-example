@@ -11,26 +11,21 @@ type action =
 
 type state = formState;
 
-/* create default states for each input based on form schema */
-let getInitialState = () : formState => {
-  initialized: false,
-  submitted: false,
-  inputStates: [],
-};
-
-let createInputStatesFromSchema = schemas : list(inputState) =>
-  schemas
-  |> List.map((schema: schemaItem) =>
-       {name: schema.name, valid: true, value: "", dirty: false, errors: []}
-     );
-
-/* temp hack to simulate React context until v16 is released */
+/*
+  temp hack to simulate React context until v16 is released. NOTE we
+  need to have things stubbed for the initial render of context, then
+  on the 2nd render we get the values passed into the context `value`
+ */
 module Context =
   ReasonReactContext.CreateContext({
     type state = context;
     let name = "FormContext";
     let defaultValue: context = {
-      formState: getInitialState(),
+      formState: {
+        initialized: false,
+        submitted: false,
+        inputStates: [],
+      },
       schemas: [],
       updateInput: (_, _) => (),
       sendInputBlur: _ => (),
@@ -40,6 +35,12 @@ module Context =
 let component = ReasonReact.reducerComponent("SimpleForm_Form");
 
 let make = (~schema: list(schemaItem), ~onSubmit, children) => {
+  let createInputStatesFromSchema = () : list(inputState) =>
+    schema
+    |> List.map((schema: schemaItem) =>
+         {name: schema.name, valid: true, value: "", dirty: false, errors: []}
+       );
+
   let handleInputChanged = (name, value, oldState) => {
     let newInputStates =
       oldState.inputStates
@@ -85,11 +86,15 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
     ...component,
     didMount: self => {
       /* initialize state lazily for context library */
-      let inputStates = createInputStatesFromSchema(schema);
+      let inputStates = createInputStatesFromSchema();
       let newState = {...self.state, initialized: true, inputStates};
       self.send(Initialized(newState));
     },
-    initialState: () => getInitialState(),
+    initialState: () => {
+      initialized: false,
+      submitted: false,
+      inputStates: createInputStatesFromSchema(),
+    },
     reducer: (action, state) =>
       switch (action) {
       | Initialized(newState) => ReasonReact.Update(newState)
@@ -104,25 +109,23 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
         updateInput: (name, text) => self.send(InputChanged(name, text)),
         sendInputBlur: name => self.send(InputBlurred(name)),
       };
-      List.length(self.state.inputStates) > 0 ?
-        <Context.Provider value=contextValue>
-          <div className="SimpleForm_Form-container">
-            (
-              ReasonReact.createDomElement(
-                "form",
-                ~props={
-                  "className": "SimpleForm_Form",
-                  "onSubmit": event => {
-                    U.preventDefault(event);
-                    self.send(Submitted);
-                  },
+      <Context.Provider value=contextValue>
+        <div className="SimpleForm_Form-container">
+          (
+            ReasonReact.createDomElement(
+              "form",
+              ~props={
+                "className": "SimpleForm_Form",
+                "onSubmit": event => {
+                  U.preventDefault(event);
+                  self.send(Submitted);
                 },
-                children,
-              )
+              },
+              children,
             )
-          </div>
-        </Context.Provider> :
-        ReasonReact.null;
+          )
+        </div>
+      </Context.Provider>;
     },
   };
 };
