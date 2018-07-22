@@ -10,6 +10,38 @@ type action =
 
 type state = formState;
 
+/** build out the states for each input in the schem and run an init validation */
+let createInitalState = schema => {
+  let inputStates =
+    schema
+    |> List.map((iSchema: schemaItem) =>
+         {
+           name: iSchema.name,
+           valid: true,
+           value: "",
+           dirty: false,
+           errors: [],
+         }
+       );
+
+  let initialState = {submitted: false, inputStates};
+
+  let newInputStates =
+    initialState.inputStates
+    |> List.map((x: inputState) => {
+         let inputState = U.findStateByName(inputStates, x.name);
+         let inputSchema = U.findSchemaByName(schema, x.name);
+
+         let errors =
+           V.validateInput(inputSchema, inputState, initialState)
+           |> List.filter(x => x.isValid == false);
+
+         {...x, valid: List.length(inputState.errors) == 0, errors};
+       });
+
+  {submitted: false, inputStates: newInputStates};
+};
+
 /*
   temp hack to simulate React context until v16 is released. NOTE we
   need to have things stubbed for the initial render of context, then
@@ -33,12 +65,6 @@ module Context =
 let component = ReasonReact.reducerComponent("SimpleForm_Form");
 
 let make = (~schema: list(schemaItem), ~onSubmit, children) => {
-  let createInputStatesFromSchema = () : list(inputState) =>
-    schema
-    |> List.map((schema: schemaItem) =>
-         {name: schema.name, valid: true, value: "", dirty: false, errors: []}
-       );
-
   let handleInputChanged = (name, value, oldState) => {
     let newInputStates =
       oldState.inputStates
@@ -82,10 +108,7 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
 
   {
     ...component,
-    initialState: () => {
-      submitted: false,
-      inputStates: createInputStatesFromSchema(),
-    },
+    initialState: () => createInitalState(schema),
     reducer: (action, state) =>
       switch (action) {
       | Submitted => handleSubmitAction(onSubmit, state)
