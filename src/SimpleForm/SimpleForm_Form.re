@@ -10,7 +10,6 @@ type action =
 
 type state = formState;
 
-/** build out the states for each input in the schem and run an init validation */
 let createInitalState = schema => {
   let inputStates =
     schema
@@ -36,7 +35,7 @@ let createInitalState = schema => {
            V.validateInput(inputSchema, inputState, initialState)
            |> List.filter(x => x.isValid == false);
 
-         {...x, valid: List.length(inputState.errors) == 0, errors};
+         {...x, valid: List.length(errors) == 0, errors};
        });
 
   {submitted: false, inputStates: newInputStates};
@@ -44,8 +43,10 @@ let createInitalState = schema => {
 
 /*
   temp hack to simulate React context until v16 is released. NOTE we
-  need to have things stubbed for the initial render of context, then
-  on the 2nd render we get the values passed into the context `value`
+  need to have things stubbed for the initial render of context because
+  passing in the real context before rendering doesn't work, it will always
+  render the initial context once.
+  https://github.com/Hehk/reason-react-context/issues/5
  */
 module Context =
   ReasonReactContext.CreateContext({
