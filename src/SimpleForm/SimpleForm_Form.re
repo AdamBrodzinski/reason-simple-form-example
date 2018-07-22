@@ -4,7 +4,6 @@ module U = SimpleForm_Utils;
 module V = SimpleForm_Validate;
 
 type action =
-  | Initialized(formState)
   | Submitted
   | InputChanged(string, string)
   | InputBlurred(string);
@@ -22,7 +21,6 @@ module Context =
     let name = "FormContext";
     let defaultValue: context = {
       formState: {
-        initialized: false,
         submitted: false,
         inputStates: [],
       },
@@ -84,20 +82,12 @@ let make = (~schema: list(schemaItem), ~onSubmit, children) => {
 
   {
     ...component,
-    didMount: self => {
-      /* initialize state lazily for context library */
-      let inputStates = createInputStatesFromSchema();
-      let newState = {...self.state, initialized: true, inputStates};
-      self.send(Initialized(newState));
-    },
     initialState: () => {
-      initialized: false,
       submitted: false,
       inputStates: createInputStatesFromSchema(),
     },
     reducer: (action, state) =>
       switch (action) {
-      | Initialized(newState) => ReasonReact.Update(newState)
       | Submitted => handleSubmitAction(onSubmit, state)
       | InputChanged(name, newTxt) => handleInputChanged(name, newTxt, state)
       | InputBlurred(name) => handleInputBlurred(name, state)
