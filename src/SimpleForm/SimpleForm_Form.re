@@ -107,9 +107,7 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
   };
 
   let handleSubmitAction = (onSubmit, state) => {
-    /* on submit we need to dirty all fields in order to display errors */
-    let inputStates = state.inputStates |> List.map(x => {...x, dirty: true});
-    let newState = {inputStates, submitted: true};
+    let newState = {...state, submitted: true};
     ReasonReact.UpdateWithSideEffects(
       newState,
       self => {
