@@ -106,9 +106,12 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
     ReasonReact.Update({...oldState, inputStates: newInputStates});
   };
 
-  let handleSubmitAction = (onSubmit, state) =>
+  let handleSubmitAction = (onSubmit, state) => {
+    /* on submit we need to dirty all fields in order to display errors */
+    let inputStates = state.inputStates |> List.map(x => {...x, dirty: true});
+    let newState = {inputStates, submitted: true};
     ReasonReact.UpdateWithSideEffects(
-      {...state, submitted: true},
+      newState,
       self => {
         if (debug) {
           Js.log("submitted: ");
@@ -121,6 +124,7 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
         ();
       },
     );
+  };
 
   {
     ...component,
