@@ -10,7 +10,32 @@ type action =
 
 type state = formState;
 
+/*
+  temp hack to simulate React context until v16 is released. NOTE we
+  need to have things stubbed for the initial render of context because
+  passing in the real context before rendering doesn't work, it will always
+  render the initial context once.
+  https://github.com/Hehk/reason-react-context/issues/5
+ */
+module Context =
+  ReasonReactContext.CreateContext({
+    type state = context;
+    let name = "FormContext";
+    let defaultValue: context = {
+      formState: {
+        submitted: false,
+        inputStates: [],
+      },
+      schemas: [],
+      updateInput: (_, _) => (),
+      sendInputBlur: _ => (),
+    };
+  });
+
+let component = ReasonReact.reducerComponent("SimpleForm_Form");
+
 let createInitalState = schema => {
+  /* TODO refactor this mess >.< */
   let inputStates =
     schema
     |> List.map((iSchema: schemaItem) =>
@@ -40,30 +65,6 @@ let createInitalState = schema => {
 
   {submitted: false, inputStates: newInputStates};
 };
-
-/*
-  temp hack to simulate React context until v16 is released. NOTE we
-  need to have things stubbed for the initial render of context because
-  passing in the real context before rendering doesn't work, it will always
-  render the initial context once.
-  https://github.com/Hehk/reason-react-context/issues/5
- */
-module Context =
-  ReasonReactContext.CreateContext({
-    type state = context;
-    let name = "FormContext";
-    let defaultValue: context = {
-      formState: {
-        submitted: false,
-        inputStates: [],
-      },
-      schemas: [],
-      updateInput: (_, _) => (),
-      sendInputBlur: _ => (),
-    };
-  });
-
-let component = ReasonReact.reducerComponent("SimpleForm_Form");
 
 let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
   let handleInputChanged = (name, value, oldState) => {
