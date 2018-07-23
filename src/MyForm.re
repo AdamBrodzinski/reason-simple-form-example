@@ -19,6 +19,7 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
   {name: "firstName", label: "First name", validations: [MinLen(2)]},
   {name: "lastName", label: "Last name", validations: []},
   {name: "age", label: "Age", validations: [Func(age18AndUp)]},
+  {name: "moreInfo", label: "More Info", validations: [MinLen(5)]},
 ];
 
 let make = _children => {
@@ -46,6 +47,7 @@ let make = _children => {
           <TextInput name="firstName" />
           <TextInput name="lastName" beforeUpdate=String.lowercase />
           <IntInput name="age" />
+          <TextArea name="moreInfo" />
           <Submit text="Update" isLoading=self.state.loading />
         </Form>
       </div>,

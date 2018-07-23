@@ -12,19 +12,22 @@
 }
 
 .SimpleForm_TextInput-error,
-.SimpleForm_IntInput-error {
+.SimpleForm_IntInput-error,
+.SimpleForm_TextArea-error {
   color: #ec0000;
   font-size: 13px;
   margin-bottom: 3px;
 }
 
 .SimpleForm_TextInput-container,
-.SimpleForm_IntInput-container {
+.SimpleForm_IntInput-container,
+.SimpleForm_TextArea-container {
   margin-bottom: 20px;
 }
 
 .SimpleForm_TextInput-container label,
-.SimpleForm_IntInput-container label {
+.SimpleForm_IntInput-container label,
+.SimpleForm_TextArea-container label {
   display: block;
   margin-bottom: 3px;
   font-size: 0.85em;
@@ -33,8 +36,10 @@
 }
 
 .SimpleForm_TextInput-container input,
-.SimpleForm_IntInput-container input {
-  font-size: 1em;
+.SimpleForm_IntInput-container input,
+.SimpleForm_TextArea-container textarea {
   width: 100%;
   padding: 0.4em;
+  font-size: 1em;
+  border: 1px solid #cacaca;
 }
