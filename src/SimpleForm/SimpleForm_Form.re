@@ -91,7 +91,17 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
              {...x, valid: List.length(inputState.errors) == 0, errors} : x
          );
 
-    ReasonReact.Update({...oldState, inputStates: newInputStates});
+    let formIsValid =
+      newInputStates
+      |> List.map((x: inputState) => List.length(x.errors) > 0)
+      |> List.filter(b => b == true)
+      |> List.length == 0;
+
+    ReasonReact.Update({
+      ...oldState,
+      isValid: formIsValid,
+      inputStates: newInputStates,
+    });
   };
 
   let handleInputBlurred = (name, oldState) => {
