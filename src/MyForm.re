@@ -22,8 +22,14 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
 ];
 
 let make = _children => {
-  let handleSubmit = (formState: SimpleForm_Types.formState, self) =>
+  let handleSubmit = (formState: SimpleForm_Types.formState, self) => {
+    if (formState.isValid) {
+      Js.log("sending data");
+    } else {
+      Js.log("do nothing, user will see visual errors");
+    };
     self.ReasonReact.send(Loaded);
+  };
 
   {
     ...component,
