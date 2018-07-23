@@ -24,6 +24,7 @@ module Context =
     let defaultValue: context = {
       formState: {
         submitted: false,
+        isValid: false,
         inputStates: [],
       },
       schemas: [],
@@ -48,7 +49,7 @@ let createInitalState = schema => {
          }
        );
 
-  let initialState = {submitted: false, inputStates};
+  let initialState = {submitted: false, isValid: false, inputStates};
 
   let newInputStates =
     initialState.inputStates
@@ -58,12 +59,12 @@ let createInitalState = schema => {
 
          let errors =
            V.validateInput(inputSchema, inputState, initialState)
-           |> List.filter(x => x.isValid == false);
+           |> List.filter((x: validationResult) => x.isValid == false);
 
          {...x, valid: List.length(errors) == 0, errors};
        });
 
-  {submitted: false, inputStates: newInputStates};
+  {submitted: false, isValid: false, inputStates: newInputStates};
 };
 
 let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
@@ -81,7 +82,7 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
 
     let errors =
       V.validateInput(inputSchema, inputState, newState)
-      |> List.filter(x => x.isValid == false);
+      |> List.filter((x: validationResult) => x.isValid == false);
 
     let newInputStates =
       newState.inputStates
@@ -107,7 +108,8 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
   };
 
   let handleSubmitAction = (onSubmit, state) => {
-    let newState = {...state, submitted: true};
+    let isValid = V.isFormValid(state, schema);
+    let newState = {...state, isValid, submitted: true};
     ReasonReact.UpdateWithSideEffects(
       newState,
       self => {
@@ -115,6 +117,7 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
           Js.log("submitted: ");
           Js.log({
             "submitted": self.state.submitted,
+            "isValid": self.state.isValid,
             "inputStates": self.state.inputStates |> Array.of_list,
           });
         };

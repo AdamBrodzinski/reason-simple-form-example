@@ -59,6 +59,14 @@ let validateInput =
 
 let inputIsValid = (iSchema, iState, formState) =>
   validateInput(iSchema, iState, formState)
-  /* |> inspect */
-  |> List.filter(v => v.isValid == false)
+  |> List.filter((v: validationResult) => v.isValid == false)
+  |> List.length == 0;
+
+let isFormValid = (formState, schema) =>
+  formState.inputStates
+  |> List.map((iState: inputState) => {
+       let iSchema = SimpleForm_Utils.findSchemaByName(schema, iState.name);
+       inputIsValid(iSchema, iState, formState);
+     })
+  |> List.filter(b => b == false)
   |> List.length == 0;
