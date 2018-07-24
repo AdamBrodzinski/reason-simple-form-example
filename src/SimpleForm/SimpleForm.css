@@ -11,9 +11,7 @@
   color: white;
 }
 
-.SimpleForm_TextInput-error,
-.SimpleForm_IntInput-error,
-.SimpleForm_TextArea-error {
+.SimpleForm_ErrorMsg {
   color: #ec0000;
   font-size: 13px;
   margin-bottom: 3px;
@@ -21,13 +19,15 @@
 
 .SimpleForm_TextInput-container,
 .SimpleForm_IntInput-container,
-.SimpleForm_TextArea-container {
+.SimpleForm_TextArea-container,
+.SimpleForm_Radio-container {
   margin-bottom: 20px;
 }
 
 .SimpleForm_TextInput-container label,
 .SimpleForm_IntInput-container label,
-.SimpleForm_TextArea-container label {
+.SimpleForm_TextArea-container label,
+.SimpleForm_Radio-container > label {
   display: block;
   margin-bottom: 3px;
   font-size: 0.85em;
@@ -42,4 +42,13 @@
   padding: 0.4em;
   font-size: 1em;
   border: 1px solid #cacaca;
+}
+
+.SimpleForm_Radio-label {
+  font-size: 0.95em;
+  margin-right: 10px;
+}
+
+.SimpleForm_Radio-label input {
+  margin-right: 5px;
 }

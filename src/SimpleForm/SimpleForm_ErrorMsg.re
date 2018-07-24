@@ -5,7 +5,7 @@ let component = ReasonReact.statelessComponent("SimpleForm_ErrorMsg");
 let make = (~inputState, ~errors, ~hasSubmitted, _ch) => {
   ...component,
   render: _self =>
-    <div className="SimpleForm_TextInput-error">
+    <div className="SimpleForm_ErrorMsg">
       (
         if (hasSubmitted || inputState.dirty) {
           switch (errors) {

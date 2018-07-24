@@ -49,6 +49,7 @@ let make =
                      radioInputs
                      |> List.mapi((i, (label, value)) =>
                           <label
+                            className="SimpleForm_Radio-label"
                             key=(string_of_int(i))
                             htmlFor=(idPrefix ++ value)>
                             <input
