@@ -17,9 +17,9 @@ let age18AndUp = (inputState: SimpleForm_Types.inputState, _formState) => {
 
 let formSchema: list(SimpleForm_Types.schemaItem) = [
   {name: "firstName", label: "First name", validations: [MinLen(2)]},
-  {name: "lastName", label: "Last name", validations: []},
   {name: "age", label: "Age", validations: [Func(age18AndUp)]},
   {name: "moreInfo", label: "More Info", validations: [MinLen(5)]},
+  {name: "favColor", label: "Favorite Color", validations: [Required]},
 ];
 
 let make = _children => {
@@ -45,9 +45,16 @@ let make = _children => {
         <Form
           schema=formSchema onSubmit=(self.handle(handleSubmit)) debug=true>
           <TextInput name="firstName" />
-          <TextInput name="lastName" beforeUpdate=String.lowercase />
           <IntInput name="age" />
           <TextArea name="moreInfo" />
+          <Radio
+            name="favColor"
+            radioInputs=[
+              ("Male", "male"),
+              ("Female", "female"),
+              ("Trans", "trans"),
+            ]
+          />
           <Submit text="Update" isLoading=self.state.loading />
         </Form>
       </div>,
