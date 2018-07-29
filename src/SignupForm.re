@@ -7,7 +7,7 @@ type action =
   | Loading
   | Loaded;
 
-let component = ReasonReact.reducerComponent("MyForm");
+let component = ReasonReact.reducerComponent("SignupForm");
 
 let age18AndUp = (inputState: SimpleForm_Types.inputState, _formState) => {
   let num = SimpleForm_Utils.intOfStringOrZero(inputState.value);
