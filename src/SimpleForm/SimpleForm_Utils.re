@@ -38,6 +38,15 @@ let isStringInteger = value =>
   | exception (Failure("int_of_string")) => false
   };
 
+/**  Determine if a string will parse into a
+     Float without throwing an exception
+ */
+let isStringFloat = value =>
+  switch (float_of_string(value)) {
+  | _num => true
+  | exception (Failure("float_of_string")) => false
+  };
+
 /** parses an int but provides a default for empty string */
 let intOfStringOrZero = (x: string) =>
   switch (String.trim(x)) {

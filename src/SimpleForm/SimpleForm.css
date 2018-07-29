@@ -22,6 +22,7 @@
 
 .SimpleForm_TextInput-container,
 .SimpleForm_IntInput-container,
+.SimpleForm_FloatInput-container,
 .SimpleForm_TextArea-container,
 .SimpleForm_Radio-container {
   margin-bottom: 20px;
@@ -29,6 +30,7 @@
 
 .SimpleForm_TextInput-container label,
 .SimpleForm_IntInput-container label,
+.SimpleForm_FloatInput-container label,
 .SimpleForm_TextArea-container label,
 .SimpleForm_Radio-container > label {
   display: block;
@@ -40,6 +42,7 @@
 
 .SimpleForm_TextInput-container input,
 .SimpleForm_IntInput-container input,
+.SimpleForm_FloatInput-container input,
 .SimpleForm_TextArea-container textarea {
   width: 100%;
   padding: 0.4em;
