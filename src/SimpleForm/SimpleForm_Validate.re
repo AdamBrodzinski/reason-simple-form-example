@@ -1,7 +1,11 @@
 open SimpleForm_Types;
 
 let validateRequired = iState => {
-  let isValid = iState.value |> String.trim |> String.length > 0;
+  let isValid =
+    switch (iState.value) {
+    | "false" => false
+    | otherVal => otherVal |> String.trim |> String.length > 0
+    };
   {isValid, kind: "required", message: "This field is required"};
 };
 

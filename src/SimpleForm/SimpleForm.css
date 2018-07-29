@@ -28,6 +28,10 @@
   margin-bottom: 20px;
 }
 
+.SimpleForm_Checkbox-container {
+  margin-bottom: 10px;
+}
+
 .SimpleForm_TextInput-container label,
 .SimpleForm_IntInput-container label,
 .SimpleForm_FloatInput-container label,
@@ -50,11 +54,13 @@
   border: 1px solid #cacaca;
 }
 
-.SimpleForm_Radio-label {
+.SimpleForm_Radio-label,
+.SimpleForm_Checkbox-label {
   font-size: 0.95em;
   margin-right: 10px;
 }
 
-.SimpleForm_Radio-label input {
+.SimpleForm_Radio-label input,
+.SimpleForm_Checkbox-label input {
   margin-right: 5px;
 }

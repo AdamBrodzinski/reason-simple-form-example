@@ -28,6 +28,7 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
   {name: "income", label: "Income", validations: []},
   {name: "moreInfo", label: "More Info", validations: [MinLen(5)]},
   {name: "gender", label: "Gender", validations: [Required]},
+  {name: "subscribe", label: "Subscribe", validations: [Required]},
 ];
 
 let make = _children => {
@@ -70,6 +71,7 @@ let make = _children => {
               ("Trans", "trans"),
             ]
           />
+          <Checkbox name="subscribe" />
           <Submit text="Update" isLoading=self.state.loading />
         </Form>
       </div>,

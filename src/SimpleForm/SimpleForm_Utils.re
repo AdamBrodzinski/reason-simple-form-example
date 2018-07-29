@@ -13,6 +13,11 @@ let getEventValue = (event: formEv) => {
   ReactDOMRe.domElementToObj(target)##value;
 };
 
+let getEventIsChecked = (event: formEv) : bool => {
+  let target = ReactEventRe.Form.target(event);
+  ReactDOMRe.domElementToObj(target)##checked;
+};
+
 let preventDefault = (event: formEv) =>
   ReactEventRe.Form.preventDefault(event);
 
@@ -45,6 +50,15 @@ let isStringFloat = value =>
   switch (float_of_string(value)) {
   | _num => true
   | exception (Failure("float_of_string")) => false
+  };
+
+/**  Determine if a string will parse into a
+     Bool without throwing an exception
+ */
+let isStringBool = value =>
+  switch (bool_of_string(value)) {
+  | _num => true
+  | exception (Failure("bool_of_string")) => false
   };
 
 /** parses an int but provides a default for empty string */
