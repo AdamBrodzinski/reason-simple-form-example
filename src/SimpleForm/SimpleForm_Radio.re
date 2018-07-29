@@ -12,9 +12,9 @@ let handleChange = (ctx, name, value) : unit => {
 let make =
     (
       ~name: string,
-      ~radioInputs,
+      ~radioValues,
       ~idPrefix="SF_",
-      ~unsafeProps={"name": name},
+      ~unsafeProps=?,
       ~beforeUpdate=?,
       _ch,
     ) => {
@@ -36,6 +36,7 @@ let make =
                    hasSubmitted
                    errors=inputState.errors
                  />
+                 /* container div catches change events */
                  <div
                    onChange=(
                      event => {
@@ -46,18 +47,27 @@ let make =
                      }
                    )>
                    (
-                     radioInputs
+                     radioValues
                      |> List.mapi((i, (label, value)) =>
                           <label
                             className="SimpleForm_Radio-label"
                             key=(string_of_int(i))
                             htmlFor=(idPrefix ++ value)>
-                            <input
-                              id=(idPrefix ++ value)
-                              type_="radio"
-                              value
-                              name
-                            />
+                            {
+                              let input =
+                                <input
+                                  id=(idPrefix ++ value)
+                                  type_="radio"
+                                  value
+                                  name
+                                />;
+
+                              switch (unsafeProps) {
+                              | Some(props) =>
+                                ReasonReact.cloneElement(input, ~props, [||])
+                              | None => ReasonReact.cloneElement(input, [||])
+                              };
+                            }
                             (ReasonReact.string(label))
                           </label>
                         )

@@ -19,7 +19,7 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
   {name: "firstName", label: "First name", validations: [MinLen(2)]},
   {name: "age", label: "Age", validations: [Func(age18AndUp)]},
   {name: "moreInfo", label: "More Info", validations: [MinLen(5)]},
-  {name: "favColor", label: "Favorite Color", validations: [Required]},
+  {name: "gender", label: "Gender", validations: [Required]},
 ];
 
 let make = _children => {
@@ -48,8 +48,8 @@ let make = _children => {
           <IntInput name="age" />
           <TextArea name="moreInfo" />
           <Radio
-            name="favColor"
-            radioInputs=[
+            name="gender"
+            radioValues=[
               ("Male", "male"),
               ("Female", "female"),
               ("Trans", "trans"),
