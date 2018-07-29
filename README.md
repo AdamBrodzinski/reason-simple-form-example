@@ -38,7 +38,7 @@ let make = _children => {
 };
 ```
 
-Default CSS Included
+Optional CSS Included
 
 ![Screenshot](https://i.imgur.com/HfuMPdo.png)
 
