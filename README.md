@@ -50,6 +50,8 @@ TODO list:
 - [ ] select input
 - [ ] finish missing validations
 - [ ] submit loading indicator/sendLoaded action
+- [ ] tests
+- [ ] add support for JS react apps?
 
 
 **TEMP documentation** this is incomplete
