@@ -46,10 +46,11 @@ TODO list:
 - [x] radio input
 - [x] integer input
 - [x] float input
-- [ ] checkbox input
-- [ ] select input
-- [ ] finish missing validations
+- [x] checkbox input
+- [x] select input
 - [ ] submit loading indicator/sendLoaded action
+- [ ] finish missing validations
+- [ ] allow for default values or prefilling fields with data
 - [ ] tests
 - [ ] create interfaces & add function docs
 - [ ] add support for JS react apps?
