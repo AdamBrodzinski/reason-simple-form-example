@@ -16,7 +16,7 @@ type action =
 
 let component = ReasonReact.reducerComponent("SignupForm");
 
-let age18AndUp = (inputState: SimpleForm_Types.inputState, _formState) => {
+let isAge18AndUp = (inputState: SimpleForm_Types.inputState, _formState) => {
   let num = SimpleForm_Utils.intOfStringOrZero(inputState.value);
   let isValid = num >= 18;
   (isValid, "You must be over 18");
@@ -24,7 +24,7 @@ let age18AndUp = (inputState: SimpleForm_Types.inputState, _formState) => {
 
 let formSchema: list(SimpleForm_Types.schemaItem) = [
   {name: "firstName", label: "First name", validations: [MinLen(2)]},
-  {name: "age", label: "Age", validations: [Func(age18AndUp)]},
+  {name: "age", label: "Age", validations: [Func(isAge18AndUp)]},
   {name: "income", label: "Income", validations: []},
   {name: "moreInfo", label: "More Info", validations: [MinLen(5)]},
   {name: "gender", label: "Gender", validations: [Required]},
@@ -59,7 +59,7 @@ let make = _children => {
     render: self =>
       <div className="MyForm">
         <Form
-          schema=formSchema onSubmit=(self.handle(handleSubmit)) debug=false>
+          schema=formSchema onSubmit=(self.handle(handleSubmit)) debug=true>
           <TextInput name="firstName" />
           <IntInput name="age" />
           <FloatInput name="income" />
