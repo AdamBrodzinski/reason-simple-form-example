@@ -2,7 +2,7 @@
 
 ## Example App for [reason-simple-form](https://github.com/AdamBrodzinski/reason-simple-form)
 
-This repo is a sandbox to build out the simple form module and then will turn into an app that requires the completed package.
+This repo is a sandbox to build out the simple form module and then will turn into an app that requires the completed package. I'm aiming at having a 1.0 version finished by the end of August. I'll also be using this production so it's not going to turn into vaporware.
 
 https://github.com/AdamBrodzinski/reason-simple-form
 
@@ -33,18 +33,37 @@ let make = _children => {
       <TextInput name="firstName" />
       <TextInput name="lastName" beforeUpdate=String.lowercase />
       <IntInput name="age" />
-      <Submit text="Sign Up" savingText="Updating..." />
+      <Submit text="Sign Up" loadingText="Saving..." />
     </Form>,
 };
 ```
+
+TODO list:
+
+- [x] default css
+- [x] text input
+- [x] text area input
+- [x] radio input
+- [x] integer input
+- [ ] float input
+- [ ] submit loading indicator/sendLoaded action
+
 
 ### Quick Temp Documentation...
 
 Simple Form tries to be flexible enough to cover 80% of the use cases. If you need more configurability you can always connect to the React context and buildup a custom input/validation as needed.
 
+### Schema
+
+The schema list allows you to describe how the input should be validated and what it's label should be. If you need to translate the labels or error messages you can map those into a function that you provide.
+
+### Form
+
+The form component is a wrapper around the inputs that sets up form state and a context. The onSubmit handler allows you to catch the changes on submit. All of the form values are in their original string type to maintain simplicity. I may change this before releasing a 1.0
+
 ### Validations
 
-note, all of these should have a `WithMsg` variant soon to provide custom error messages
+note, all of these should have a `WithMsg` variant soon to provide custom error messages. Other constructors will be coming soon but these should cover a lot of cases.
 
   - `Required` Requires that any non empty string is entered into the input
   - `Email` Requires that a simple email regex matches (`a@b.`) is valid
@@ -53,9 +72,52 @@ note, all of these should have a `WithMsg` variant soon to provide custom error 
   - `MinLen(int)` String length must be greater or equal to integer value
   - `MaxLen(int)` String length must less than or equal to integer value
   - `Func((inputState, formState) => (bool, string))` Custom validator function to read input data and return answer
-  
+
+### Inputs
+
+Componet names assume you are using `open SimpleForm`, otherwise add namespace: `SimpleForm_TextInput`
+
+- `Submit` - Optional submit button (you can use your own if you wish). This one has support for text that changes and disables when the form is in a loading state. Props: `text: string loadingText?: string`
+```
+  <Submit text="Sign Up" loadingText="Updating..." />
+```
+
+- `TextInput` - Normal text input.
+```
+  <TextInput name="firstName" />
+```
+
+- `IntInput` - Only accept valid `int_of_string` characters. Any invalid values will be dropped and never updated.
+```
+  <IntInput name="age" />
+```
+
+- `FloatInput` - Only accepts valid `float_of_string`  characters. Any invalid values will be dropped and never updated.
+```
+  /* WIP */
+  <IntInput name="age" />
+```
+
+- `Radio` -
+```
+  <Radio
+    name="color"
+    radioValues=[ ("Red", "red"), ("Green", "green")] 
+  />
+```
+
+- `Checkbox` - Standard checkbox. returns value `"true"` or `"false"`
+```
+  <IntInput name="age" />
+```
+
+
 ### Input Props
 
 Currently inputs have a `name`, `beforeUpdate`, and `unsafeProps` props. These will be more complete soon but are minimal to enable easier change before the API is settled on.
 
+- `name` `string` *Required* Pass in input attribute name. This name will also be used in the schema
 - `beforeUpdate` `(string) => string` Allows you to transform the input value before it's saved into form state. This is handy to force casing or other special use cases.
+- `unsafeProps` `{.}` - Pass any props unsafely into the react component. These props go into each input only (perhaps in the future i'll add a unsafeLabelProps and unsafeErrorProps props)
+
+
