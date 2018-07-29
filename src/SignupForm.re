@@ -1,6 +1,13 @@
 [%bs.raw {|require('./SimpleForm/SimpleForm.css')|}];
 open SimpleForm;
 
+let simulateServerResponse = formData =>
+  Js.Promise.make((~resolve, ~reject) => {
+    Js.log(formData);
+    let _ = Js.Global.setTimeout(() => resolve(. formData), 1500);
+    ();
+  });
+
 type state = {loading: bool};
 
 type action =
@@ -23,14 +30,20 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
 ];
 
 let make = _children => {
-  let handleSubmit = (formState: SimpleForm_Types.formState, self) => {
+  let handleSubmit = (formState: SimpleForm_Types.formState, self) =>
     if (formState.isValid) {
-      Js.log("sending data");
+      self.ReasonReact.send(Loading);
+      Js.log("sending form values to fake server...");
+      simulateServerResponse(formState)
+      |> Js.Promise.then_(_value => {
+           self.ReasonReact.send(Loaded);
+           Js.log("Save successful");
+           Js.Promise.resolve();
+         })
+      |> ignore;
     } else {
       Js.log("do nothing, user will see visual errors");
     };
-    self.ReasonReact.send(Loaded);
-  };
 
   {
     ...component,
@@ -43,7 +56,7 @@ let make = _children => {
     render: self =>
       <div className="MyForm">
         <Form
-          schema=formSchema onSubmit=(self.handle(handleSubmit)) debug=true>
+          schema=formSchema onSubmit=(self.handle(handleSubmit)) debug=false>
           <TextInput name="firstName" />
           <IntInput name="age" />
           <TextArea name="moreInfo" />
