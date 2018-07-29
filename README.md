@@ -51,6 +51,7 @@ TODO list:
 - [ ] finish missing validations
 - [ ] submit loading indicator/sendLoaded action
 - [ ] tests
+- [ ] create interfaces & add function docs
 - [ ] add support for JS react apps?
 
 
