@@ -38,6 +38,9 @@ let make = _children => {
 };
 ```
 
+Default CSS Included
+![Screenshot](https://i.imgur.com/JVjAvbK.png)
+
 TODO list:
 
 - [x] default css
