@@ -10,6 +10,9 @@
   border: none;
   color: white;
 }
+.SimpleForm_Submit:disabled {
+  opacity: 0.4;
+}
 
 .SimpleForm_ErrorMsg {
   color: #ec0000;
