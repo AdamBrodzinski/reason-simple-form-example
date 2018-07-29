@@ -1,5 +1,5 @@
 {
-  "name": "reason-scripts",
+  "name": "reason-simple-form-example",
   "sources": [{ "dir": "src", "subdirs": true }],
   "bs-dependencies": [
     "reason-react",
@@ -15,7 +15,7 @@
   },
   "refmt": 3,
   "package-specs": {
-    "module": "es6",
+    "module": "commonjs",
     "in-source": true
   },
   "suffix": ".bs.js"
