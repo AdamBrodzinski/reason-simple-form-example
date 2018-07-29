@@ -1,7 +1,7 @@
 open SimpleForm_Types;
 module U = SimpleForm_Utils;
 
-let component = ReasonReact.statelessComponent("SimpleForm_TextArea");
+let component = ReasonReact.statelessComponent("SimpleForm_Radio");
 
 let handleChange = (ctx, name, value) : unit => {
   ctx.updateInput(name, value);

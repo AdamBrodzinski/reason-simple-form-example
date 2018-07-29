@@ -28,7 +28,8 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
   {name: "income", label: "Income", validations: []},
   {name: "moreInfo", label: "More Info", validations: [MinLen(5)]},
   {name: "gender", label: "Gender", validations: [Required]},
-  {name: "subscribe", label: "Subscribe", validations: [Required]},
+  {name: "plan", label: "Plan", validations: [Required]},
+  {name: "subscribe", label: "Subscribe to Newsletter", validations: []},
 ];
 
 let make = _children => {
@@ -69,6 +70,15 @@ let make = _children => {
               ("Male", "male"),
               ("Female", "female"),
               ("Trans", "trans"),
+            ]
+          />
+          <Select
+            name="plan"
+            options=[
+              ("Select Plan", ""),
+              ("Bronze", "plan1"),
+              ("Silver", "plan2"),
+              ("Gold", "plan3"),
             ]
           />
           <Checkbox name="subscribe" />

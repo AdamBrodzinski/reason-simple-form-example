@@ -7,3 +7,4 @@ module FloatInput = SimpleForm_FloatInput;
 module TextArea = SimpleForm_TextArea;
 module Radio = SimpleForm_Radio;
 module Checkbox = SimpleForm_Checkbox;
+module Select = SimpleForm_Select;
