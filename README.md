@@ -40,7 +40,7 @@ let make = _children => {
 
 Default CSS Included
 
-![Screenshot](https://i.imgur.com/JVjAvbK.png)
+![Screenshot](https://i.imgur.com/HfuMPdo.png)
 
 TODO list:
 
