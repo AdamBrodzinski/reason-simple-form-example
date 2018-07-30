@@ -127,8 +127,7 @@ Componet names assume you are using `open SimpleForm`, otherwise add namespace: 
 - `FloatInput` - Only accepts valid `float_of_string` characters. Any invalid values will be dropped and never updated.
 
 ```javascript
-/* WIP */
-<IntInput name="age" />
+<FloatInput name="income" />
 ```
 
 - `Radio` -
