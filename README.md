@@ -52,7 +52,7 @@ TODO list:
 - [x] float input
 - [x] checkbox input
 - [x] select input
-- [ ] submit loading indicator/sendLoaded action
+- [x] submit loading indicator/sendLoaded action
 - [ ] finish missing validations
 - [ ] allow for default values or prefilling fields with data
 - [ ] tests
