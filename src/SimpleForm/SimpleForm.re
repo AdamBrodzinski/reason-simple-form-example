@@ -8,3 +8,5 @@ module TextArea = SimpleForm_TextArea;
 module Radio = SimpleForm_Radio;
 module Checkbox = SimpleForm_Checkbox;
 module Select = SimpleForm_Select;
+
+type formState = SimpleForm_Types.formState;

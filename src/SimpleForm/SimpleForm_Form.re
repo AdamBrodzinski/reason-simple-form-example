@@ -4,6 +4,8 @@ module U = SimpleForm_Utils;
 module V = SimpleForm_Validate;
 
 type action =
+  | Loading
+  | Loaded
   | Submitted
   | InputChanged(string, string)
   | InputBlurred(string);
@@ -24,6 +26,7 @@ module Context =
     let defaultValue: context = {
       formState: {
         submitted: false,
+        loading: false,
         isValid: false,
         inputStates: [],
       },
@@ -49,7 +52,12 @@ let createInitalState = schema => {
          }
        );
 
-  let initialState = {submitted: false, isValid: false, inputStates};
+  let initialState = {
+    submitted: false,
+    loading: false,
+    isValid: false,
+    inputStates,
+  };
 
   let newInputStates =
     initialState.inputStates
@@ -64,7 +72,12 @@ let createInitalState = schema => {
          {...x, valid: List.length(errors) == 0, errors};
        });
 
-  {submitted: false, isValid: false, inputStates: newInputStates};
+  {
+    submitted: false,
+    loading: false,
+    isValid: false,
+    inputStates: newInputStates,
+  };
 };
 
 let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
@@ -131,7 +144,10 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
             "inputStates": self.state.inputStates |> Array.of_list,
           });
         };
-        onSubmit(self.state);
+        if (isValid) {
+          self.send(Loading);
+        }
+        onSubmit(~sendLoaded=(() => self.send(Loaded)), self.state);
         ();
       },
     );
@@ -145,6 +161,8 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
       | Submitted => handleSubmitAction(onSubmit, state)
       | InputChanged(name, newTxt) => handleInputChanged(name, newTxt, state)
       | InputBlurred(name) => handleInputBlurred(name, state)
+      | Loading => ReasonReact.Update({...state, loading: true});
+      | Loaded => ReasonReact.Update({...state, loading: false});
       },
     render: self => {
       let contextValue: context = {

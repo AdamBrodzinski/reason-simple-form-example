@@ -8,13 +8,7 @@ let simulateServerResponse = formData =>
     ();
   });
 
-type state = {loading: bool};
-
-type action =
-  | Loading
-  | Loaded;
-
-let component = ReasonReact.reducerComponent("SignupForm");
+let component = ReasonReact.statelessComponent("SignupForm");
 
 let isAge18AndUp = (inputState: SimpleForm_Types.inputState, _formState) => {
   let num = SimpleForm_Utils.intOfStringOrZero(inputState.value);
@@ -33,33 +27,21 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
 ];
 
 let make = _children => {
-  let handleSubmit = (formState: SimpleForm_Types.formState, self) =>
-    if (formState.isValid) {
-      self.ReasonReact.send(Loading);
-      Js.log("sending form values to fake server...");
-      simulateServerResponse(formState)
+  let handleSubmit = (~sendLoaded, form: formState) =>
+    if (form.isValid) {
+      simulateServerResponse(form)
       |> Js.Promise.then_(_value => {
-           self.ReasonReact.send(Loaded);
-           Js.log("Save successful");
+           sendLoaded();
            Js.Promise.resolve();
          })
       |> ignore;
-    } else {
-      Js.log("do nothing, user will see visual errors");
     };
 
   {
     ...component,
-    initialState: () => {loading: false},
-    reducer: (action, _state) =>
-      switch (action) {
-      | Loading => ReasonReact.Update({loading: true})
-      | Loaded => ReasonReact.Update({loading: false})
-      },
-    render: self =>
+    render: _self =>
       <div className="MyForm">
-        <Form
-          schema=formSchema onSubmit=(self.handle(handleSubmit)) debug=true>
+        <Form schema=formSchema onSubmit=handleSubmit debug=true>
           <TextInput name="firstName" />
           <IntInput name="age" />
           <FloatInput name="income" />
@@ -82,7 +64,7 @@ let make = _children => {
             ]
           />
           <Checkbox name="subscribe" />
-          <Submit text="Update" isLoading=self.state.loading />
+          <Submit text="Update" />
         </Form>
       </div>,
   };

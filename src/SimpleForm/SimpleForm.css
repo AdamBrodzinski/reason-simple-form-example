@@ -11,8 +11,13 @@
   border: none;
   color: white;
 }
+
 .SimpleForm_Submit:disabled {
   opacity: 0.4;
+}
+
+.SimpleForm_Submit-container .SimpleForm_ErrorMsg {
+  margin-top: 10px;
 }
 
 .SimpleForm_ErrorMsg {
