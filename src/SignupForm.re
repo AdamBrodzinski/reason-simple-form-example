@@ -1,13 +1,6 @@
 [%bs.raw {|require('./SimpleForm/SimpleForm.css')|}];
 open SimpleForm;
 
-let simulateServerResponse = formData =>
-  Js.Promise.make((~resolve, ~reject) => {
-    Js.log(formData);
-    let _ = Js.Global.setTimeout(() => resolve(. formData), 1500);
-    ();
-  });
-
 let component = ReasonReact.statelessComponent("SignupForm");
 
 let isAge18AndUp = (inputState: SimpleForm_Types.inputState, _formState) => {
@@ -27,15 +20,10 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
 ];
 
 let make = _children => {
-  let handleSubmit = (~sendLoaded, form: formState) =>
-    if (form.isValid) {
-      simulateServerResponse(form)
-      |> Js.Promise.then_(_value => {
-           sendLoaded();
-           Js.Promise.resolve();
-         })
-      |> ignore;
-    };
+  let handleSubmit = (~sendLoaded, form: formState) => {
+    Js.log(form);
+    Js.Global.setTimeout(() => sendLoaded(), 1500);
+  };
 
   {
     ...component,
@@ -56,12 +44,7 @@ let make = _children => {
           />
           <Select
             name="plan"
-            options=[
-              ("Select Plan", ""),
-              ("Bronze", "plan1"),
-              ("Silver", "plan2"),
-              ("Gold", "plan3"),
-            ]
+            options=[("Select Plan", ""), ("Bronze", "plan1")]
           />
           <Checkbox name="subscribe" />
           <Submit text="Update" />

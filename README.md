@@ -23,7 +23,7 @@ let formSchema: SimpleForm.schemaList = [
 
 /* optional `sendLoaded` action stops loading indicator for optional Submit button */
 let handleSubmit = (~sendLoaded, formState) =>
-  myLoginUserFunc(formState.inputValues)
+  myLoginUserFunc(formState)
   |> then_(res => sendLoaded() });
 
 let make = _children => {
