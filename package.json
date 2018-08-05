@@ -10,11 +10,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "now-start": "serve --single ./build",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "prepare": "npm link bs-platform"
+    "prepare": "npm link bs-platform",
+    "deploy": "netlify deploy"
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.2",
