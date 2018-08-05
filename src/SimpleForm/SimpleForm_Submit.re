@@ -18,15 +18,15 @@ let make =
                let errorText =
                  ! state.isValid && state.submitted ? errorText : "";
                <div className="SimpleForm_Submit-container">
+                 <div className="SimpleForm_ErrorMsg">
+                   (ReasonReact.string(errorText))
+                 </div>
                  <button
                    type_="submit"
                    className="SimpleForm_Submit"
                    disabled=ctx.formState.loading>
                    (ReasonReact.string(buttonText))
                  </button>
-                 <div className="SimpleForm_ErrorMsg">
-                   (ReasonReact.string(errorText))
-                 </div>
                </div>;
              } else {
                ReasonReact.null;

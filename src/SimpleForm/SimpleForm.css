@@ -37,8 +37,14 @@
 .SimpleForm_ErrorMsg {
   color: #ec0000;
   font-size: 13px;
-  margin-bottom: 3px;
+  margin-left: 8px;
   display: inline-block;
+}
+
+.SimpleForm_Checkbox-container .SimpleForm_ErrorMsg,
+.SimpleForm_Submit-container .SimpleForm_ErrorMsg {
+  display: block;
+  margin: 0 0 5px 0;
 }
 
 .SimpleForm_Submit-container,
