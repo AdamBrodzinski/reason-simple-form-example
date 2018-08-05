@@ -1,4 +1,3 @@
-[%%debugger.chrome];
 open SimpleForm_Types;
 module U = SimpleForm_Utils;
 module V = SimpleForm_Validate;
