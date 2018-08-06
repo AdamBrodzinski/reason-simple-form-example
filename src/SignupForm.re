@@ -55,7 +55,7 @@ let make = _children => {
     render: _self =>
       <div className="SignupForm">
         <Form schema=formSchema onSubmit=handleSubmit>
-          <SimpleForm_Input name="firstName" />
+          <Input name="firstName" />
           <Input name="age" />
           <Input name="income" />
           <TextArea name="moreInfo" />
