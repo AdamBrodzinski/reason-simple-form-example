@@ -31,9 +31,12 @@ type validations =
   | MaxLen(int)
   | Func(validateFunc);
 
+type schemaItemType = [ | `String | `Float | `Int | `Bool];
+
 /** Represents the schema for a single input */
 type schemaItem = {
   name: string,
+  castType: schemaItemType,
   label: string,
   validations: list(validations),
 };
