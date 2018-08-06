@@ -17,7 +17,6 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
                <SimpleForm_TextLikeInput
                  name
                  className="SimpleForm_TextInput-container"
-                 castType="string"
                  inputType="text"
                  onBlur=(handleBlur(ctx, name))
                  onChange=(handleChange(ctx, name))

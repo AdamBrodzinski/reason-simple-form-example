@@ -10,7 +10,6 @@ let make =
       ~name,
       ~className,
       ~inputType,
-      ~castType,
       ~unsafeProps,
       ~onBlur,
       ~onChange,
