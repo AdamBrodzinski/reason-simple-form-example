@@ -18,23 +18,23 @@ open SimpleForm;
 let component = ReasonReact.reducerComponent("SignupForm");
 
 let formSchema: SimpleForm.schemaList = [
-  {name: "username", label: "Username", validations: [MinLen(2), MaxLen(20)]},
-  {name: "email", label: "email", validations: [Email]},
-  {name: "age", label: "Age", validations: [Regex(myRegex, "Invalid Age")]},
+  {name: "username", castType: `String, label: "Username", validations: [MinLen(2), MaxLen(20)]},
+  {name: "email",  castType: `String, label: "email", validations: [Email]},
+  {name: "age", castType: `Int, label: "Age", validations: [Regex(myRegex, "Invalid Age")]},
 ];
 
-/* optional `sendLoaded` action stops loading indicator for optional Submit button */
-let handleSubmit = (~sendLoaded, formState) =>
-  myLoginUserFunc(formState)
-  |> then_(res => sendLoaded() });
+let handleSubmit = (~sendLoaded, form: formState) => {
+  Js.log(form);
+  Js.Global.setTimeout(() => sendLoaded(), 1500);
+};
 
 let make = _children => {
   ...component,
   render: _self =>
     <Form schema=formSchema onSubmit=handleSubmit>
-      <TextInput name="firstName" />
-      <TextInput name="lastName" beforeUpdate=String.lowercase />
-      <IntInput name="age" />
+      <Input name="username" />
+      <Input name="email" beforeUpdate=String.lowercase />
+      <Input name="age" />
       <Submit text="Sign Up" loadingText="Saving..." />
     </Form>,
 };
@@ -55,8 +55,12 @@ TODO list:
 - [x] checkbox input
 - [x] select input
 - [x] submit loading indicator/sendLoaded action
-- [ ] finish missing validations
+- [x] move input types to schema
+- [x] consolidate textbox inputs into one `<Input />` component
+- [ ] finish missing validations (like `RequiredWithMsg(string)`)
 - [ ] allow for default values or prefilling fields with data
+- [ ] move over to separate repo and release to NPM
+- [ ] cast values into their type before sending to `onSubmit` handler
 - [ ] tests
 - [ ] create interfaces & add function docs
 - [ ] add support for JS react apps?
