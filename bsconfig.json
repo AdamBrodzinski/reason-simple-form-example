@@ -11,7 +11,7 @@
   },
   "bsc-flags": ["-bs-super-errors", "-bs-g"],
   "warnings": {
-    "error": "+101"
+    "error": "+8+27"
   },
   "refmt": 3,
   "package-specs": {
