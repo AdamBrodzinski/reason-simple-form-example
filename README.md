@@ -11,6 +11,8 @@ https://github.com/AdamBrodzinski/reason-simple-form
 Example:
 
 ```javascript
+/* optional default/starter CSS for prototyping */
+[%bs.raw {| require('reason-simple-form/default.css') |}];
 open SimpleForm;
 
 let component = ReasonReact.reducerComponent("SignupForm");
@@ -57,8 +59,9 @@ TODO list:
 - [x] consolidate textbox inputs into one `<Input />` component
 - [ ] finish missing validations (like `RequiredWithMsg(string)`)
 - [ ] allow for default values or prefilling fields with data
-- [ ] cast values into their type before sending to `onSubmit` handler
 - [ ] move over to separate repo and release to NPM
+- [ ] cast values into their type before sending to `onSubmit` handler
+- [ ] better exceptions for invalid matches
 - [ ] tests
 - [ ] create interfaces & add function docs
 - [ ] add support for JS react apps?
@@ -116,13 +119,11 @@ Componet names assume you are using `open SimpleForm`, otherwise add namespace: 
 <Submit text="Sign Up" loadingText="Updating..." />
 ```
 
-- `Input` - This is a shell component that will render one of the components below based on the castType in that inputs schema. For example having a `castType: 'Float` will cause `<Input/>` to render a `<SimpleForm_Float />` component which only accepts (saves) inputs that are valid float values.
+- `TextInput` - Normal text input.
 
 ```javascript
-<Input name="firstName" />
+<TextInput name="firstName" />
 ```
-
-### Sub input components
 
 - `IntInput` - Only accept valid `int_of_string` characters. Any invalid values will be dropped and never updated.
 
