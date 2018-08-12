@@ -24,11 +24,14 @@ type validateFunc = (inputState, formState) => (bool, string);
 
 type validations =
   | Required
+  | RequiredWithMsg(string)
   | Email
   | EmailWithMsg(string)
   | Regex(Js.Re.t, string)
   | MinLen(int)
+  | MinLenWithMsg(int, string)
   | MaxLen(int)
+  | MaxLenWithMsg(int, string)
   | Func(validateFunc);
 
 type schemaItemType = [ | `String | `Float | `Int | `Bool];

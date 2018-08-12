@@ -1,12 +1,12 @@
 open SimpleForm_Types;
 
-let validateRequired = iState => {
+let validateRequired = (iState, msg) => {
   let isValid =
     switch (iState.value) {
     | "false" => false
     | otherVal => otherVal |> String.trim |> String.length > 0
     };
-  {isValid, kind: "required", message: "This field is required"};
+  {isValid, kind: "required", message: msg};
 };
 
 let validateEmail = (iState, msg) => {
@@ -44,7 +44,10 @@ let validateInput =
     iSchema.validations
     |> List.map(validateVariant =>
          switch (validateVariant) {
-         | Required => validateRequired(iState)
+         | Required =>
+           let msg = "This field is required";
+           validateRequired(iState, msg);
+         | RequiredWithMsg(msg) => validateRequired(iState, msg)
          | Email =>
            let msg = "A valid email address is required";
            validateEmail(iState, msg);
@@ -53,9 +56,11 @@ let validateInput =
          | MinLen(amt) =>
            let msg = string_of_int(amt) ++ " or more characters are required";
            validateMin(iState, amt, msg);
+         | MinLenWithMsg(amt, msg) => validateMin(iState, amt, msg)
          | MaxLen(amt) =>
            let msg = string_of_int(amt) ++ " or less characters are required";
            validateMax(iState, amt, msg);
+         | MaxLenWithMsg(amt, msg) => validateMax(iState, amt, msg)
          | Func(func) => validateWithFunc(func, iState, formState)
          }
        )
