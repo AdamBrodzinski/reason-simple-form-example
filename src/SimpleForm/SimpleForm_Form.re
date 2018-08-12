@@ -2,6 +2,8 @@ open SimpleForm_Types;
 module U = SimpleForm_Utils;
 module V = SimpleForm_Validate;
 
+exception InputNotInForm(string);
+
 type action =
   | Loading
   | Loaded
@@ -79,6 +81,14 @@ let createInitalState = schema => {
   };
 };
 
+let inputIsPresent: string => bool = [%bs.raw
+  {|
+    function (name) {
+      return !! document.getElementsByName(name).length;
+    }
+  |}
+];
+
 let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
   let handleInputChanged = (name, value, oldState) => {
     if (debug) {
@@ -155,6 +165,19 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
   {
     ...component,
     initialState: () => createInitalState(schema),
+    didMount: _self => {
+      /* TODO use React 16 error boundry to display and error */
+      let _ = Js.Global.setTimeout(() => { 
+        List.map((item: schemaItem) => {
+          if (inputIsPresent(item.name) == false) {
+            let notFoundMsg = "You passed in a schema item for '" ++ item.name ++
+              "' and we can not find it in the DOM. Please insert the input or remove the unused schema item.";
+            raise(InputNotInForm(notFoundMsg));
+          }
+          item;
+        }, schema) |> ignore;
+      }, 1000);
+    },
     reducer: (action, state) =>
       switch (action) {
       | Submitted => handleSubmitAction(onSubmit, state)
