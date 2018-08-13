@@ -89,7 +89,7 @@ let inputIsPresent: string => bool = [%bs.raw
   |}
 ];
 
-let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
+let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, ~presenceCheck=true, children) => {
   let handleInputChanged = (name, value, oldState) => {
     if (debug) {
       Js.log("input changed: " ++ name ++ " - " ++ value);
@@ -167,16 +167,18 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, children) => {
     initialState: () => createInitalState(schema),
     didMount: _self => {
       /* TODO use React 16 error boundry to display and error */
-      let _ = Js.Global.setTimeout(() => { 
-        List.map((item: schemaItem) => {
-          if (inputIsPresent(item.name) == false) {
-            let notFoundMsg = "You passed in a schema item for '" ++ item.name ++
-              "' and we can not find it in the DOM. Please insert the input or remove the unused schema item.";
-            raise(InputNotInForm(notFoundMsg));
-          }
-          item;
-        }, schema) |> ignore;
-      }, 1000);
+      if (presenceCheck) {
+        let _ = Js.Global.setTimeout(() => { 
+          List.map((item: schemaItem) => {
+            if (inputIsPresent(item.name) == false) {
+              let notFoundMsg = "You passed in a schema item for '" ++ item.name ++
+                "' and we can not find it in the DOM. Please insert the input or remove the unused schema item.";
+              raise(InputNotInForm(notFoundMsg));
+            }
+            item;
+          }, schema) |> ignore;
+        }, 1000);
+      }
     },
     reducer: (action, state) =>
       switch (action) {
