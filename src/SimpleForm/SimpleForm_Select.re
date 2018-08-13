@@ -31,6 +31,7 @@ let make = (~name: string, ~options, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
                  {
                    let input =
                      <select
+                       name
                        className="SimpleForm_Select"
                        onChange=(
                          event => {
