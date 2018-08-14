@@ -23,11 +23,7 @@ let make = (~name: string, ~options, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
 
                <div className="SimpleForm_Select-container">
                  <label> (ReasonReact.string(inputSchema.label)) </label>
-                 <SimpleForm_ErrorMsg
-                   inputState
-                   hasSubmitted
-                   errors=inputState.errors
-                 />
+                 <SimpleForm_ErrorMsg inputState hasSubmitted />
                  {
                    let input =
                      <select

@@ -12,11 +12,7 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
              name, ({state, inputSchema, hasSubmitted, sendBlur, sendChange}) =>
              <div className="SimpleForm_TextArea-container">
                <label> (ReasonReact.string(inputSchema.label)) </label>
-               <SimpleForm_ErrorMsg
-                 inputState=state
-                 hasSubmitted
-                 errors=state.errors
-               />
+               <SimpleForm_ErrorMsg inputState=state hasSubmitted />
                (
                  <textarea
                    name

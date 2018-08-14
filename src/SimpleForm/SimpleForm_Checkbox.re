@@ -24,11 +24,7 @@ let make =
            SimpleForm_Utils.inputApi(
              name, ({ctx, state, inputSchema, hasSubmitted}) =>
              <div className="SimpleForm_Checkbox-container">
-               <SimpleForm_ErrorMsg
-                 inputState=state
-                 hasSubmitted
-                 errors=state.errors
-               />
+               <SimpleForm_ErrorMsg inputState=state hasSubmitted />
                <label
                  className="SimpleForm_Checkbox-label"
                  htmlFor=(idPrefix ++ name)>

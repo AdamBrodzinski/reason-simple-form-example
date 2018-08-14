@@ -31,11 +31,7 @@ let make =
 
                <div className="SimpleForm_Radio-container">
                  <label> (ReasonReact.string(inputSchema.label)) </label>
-                 <SimpleForm_ErrorMsg
-                   inputState
-                   hasSubmitted
-                   errors=inputState.errors
-                 />
+                 <SimpleForm_ErrorMsg inputState hasSubmitted />
                  /* container div catches change events */
                  <div
                    onChange=(
