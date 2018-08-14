@@ -8,6 +8,10 @@ let inspect = x => {
   x;
 };
 
+/** handy function to map over data and return a react array */
+let mapReactList = (elList, func) =>
+  List.mapi(func, elList) |> Array.of_list |> ReasonReact.array;
+
 let getEventValue = (event: formEv) => {
   let target = ReactEventRe.Form.target(event);
   ReactDOMRe.domElementToObj(target)##value;
