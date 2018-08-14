@@ -1,4 +1,4 @@
-module T = SimpleForm_Types;
+open SimpleForm_Types;
 
 type formEv = ReactEventRe.Form.t;
 
@@ -22,10 +22,10 @@ let preventDefault = (event: formEv) =>
   ReactEventRe.Form.preventDefault(event);
 
 let findSchemaByName = (schemas, name) =>
-  List.find((x: T.schemaItem) => x.name == name, schemas);
+  List.find((x: schemaItem) => x.name == name, schemas);
 
 let findStateByName = (formStates, name) =>
-  List.find((x: T.inputState) => x.name == name, formStates);
+  List.find((x: inputState) => x.name == name, formStates);
 
 /* used for optional react props */
 let fallbackFunc = (optionFunc, defaultFunc) =>
@@ -66,4 +66,35 @@ let intOfStringOrZero = (x: string) =>
   switch (String.trim(x)) {
   | "" => 0
   | num => int_of_string(num)
+  };
+
+let insertProps = (unsafeProps, input) =>
+  switch (unsafeProps) {
+  | Some(props) => ReasonReact.cloneElement(input, ~props, [||])
+  | None => ReasonReact.cloneElement(input, [||])
+  };
+
+type fieldMetadata = {
+  ctx: context,
+  state: inputState,
+  inputSchema: schemaItem,
+  hasSubmitted: bool,
+  sendBlur: ReactEventRe.Focus.t => unit,
+  sendChange: string => unit,
+};
+
+let inputApi = (name: string, consumerFun, ctx) =>
+  /* context will always render once with empty data, prev empty render */
+  switch (List.length(ctx.schemas) > 0) {
+  | false => ReasonReact.null
+  | true =>
+    let inputStates = ctx.formState.inputStates;
+    consumerFun({
+      ctx,
+      state: findStateByName(inputStates, name),
+      inputSchema: findSchemaByName(ctx.schemas, name),
+      hasSubmitted: ctx.formState.submitted,
+      sendBlur: _ev => ctx.sendInputBlur(name),
+      sendChange: value => ctx.updateInput(name, value),
+    });
   };
