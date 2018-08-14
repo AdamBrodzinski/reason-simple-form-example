@@ -79,7 +79,7 @@ type fieldMetadata = {
   state: inputState,
   inputSchema: schemaItem,
   hasSubmitted: bool,
-  sendBlur: ReactEventRe.Focus.t => unit,
+  sendBlur: unit => unit,
   sendChange: string => unit,
 };
 
@@ -94,7 +94,7 @@ let inputApi = (name: string, consumerFun, ctx) =>
       state: findStateByName(inputStates, name),
       inputSchema: findSchemaByName(ctx.schemas, name),
       hasSubmitted: ctx.formState.submitted,
-      sendBlur: _ev => ctx.sendInputBlur(name),
+      sendBlur: () => ctx.sendInputBlur(name),
       sendChange: value => ctx.updateInput(name, value),
     });
   };

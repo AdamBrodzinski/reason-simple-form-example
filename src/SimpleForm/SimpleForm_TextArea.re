@@ -17,7 +17,7 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
                  <textarea
                    name
                    value=state.value
-                   onBlur=sendBlur
+                   onBlur=(_e => sendBlur())
                    onChange=(
                      event => {
                        let value: string = U.getEventValue(event);
