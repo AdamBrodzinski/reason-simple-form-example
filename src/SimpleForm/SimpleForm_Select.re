@@ -18,12 +18,12 @@ let make =
                  <select
                    name
                    className="SimpleForm_Select"
+                   onBlur=(_e => sendBlur())
                    onChange=(
                      event => {
                        let value: string = U.getEventValue(event);
                        let value2 = beforeUpdate(value);
                        sendChange(value2);
-                       sendBlur(); /* TODO trigger dirty on change instead */
                      }
                    )>
                    (

@@ -3,7 +3,7 @@ module U = SimpleForm_Utils;
 
 let component = ReasonReact.statelessComponent("SimpleForm_TextArea");
 
-let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
+let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=x => x, _ch) => {
   ...component,
   render: _self =>
     <SimpleForm_Form.Context.Consumer>
@@ -21,7 +21,6 @@ let make = (~name: string, ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
                    onChange=(
                      event => {
                        let value: string = U.getEventValue(event);
-                       let beforeUpdate = U.fallbackFunc(beforeUpdate, x => x);
                        let value2 = beforeUpdate(value);
                        sendChange(value2);
                      }
