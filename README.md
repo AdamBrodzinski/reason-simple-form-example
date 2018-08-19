@@ -57,13 +57,13 @@ TODO list:
 - [x] submit loading indicator/sendLoaded action
 - [x] move input types to schema
 - [x] consolidate textbox inputs into one `<Input />` component
-- [ ] finish missing validations (like `RequiredWithMsg(string)`)
+- [x] finish missing validations (like `RequiredWithMsg(string)`)
 - [ ] allow for default values or prefilling fields with data
-- [ ] move over to separate repo and release to NPM
 - [ ] cast values into their type before sending to `onSubmit` handler
-- [ ] better exceptions for invalid matches
-- [ ] tests
-- [ ] create interfaces & add function docs
+- [ ] better exceptions for invalid configurations
+- [ ] move over to separate repo and release to NPM
+- [ ] add tests for React
+- [ ] create interface files & add function docs
 - [ ] add support for JS react apps?
 
 **TEMP documentation** this is incomplete
