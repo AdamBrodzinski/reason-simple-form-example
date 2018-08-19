@@ -62,7 +62,7 @@ let isStringFloat = value =>
 let isStringBool = value =>
   switch (bool_of_string(value)) {
   | _num => true
-  | exception (Failure("bool_of_string")) => false
+  | exception (Invalid_argument("bool_of_string")) => false
   };
 
 /** parses an int but provides a default for empty string */
