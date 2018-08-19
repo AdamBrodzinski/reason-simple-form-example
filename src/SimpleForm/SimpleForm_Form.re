@@ -2,6 +2,10 @@ open SimpleForm_Types;
 module U = SimpleForm_Utils;
 module V = SimpleForm_Validate;
 
+/** Throw if the user has declared an input in their schema but it's not
+ *  present in the DOM. This is optional and can be turned off if you
+ * know that it's not present at render but will be in the future.
+ */
 exception InputNotInForm(string);
 
 type action =
@@ -92,7 +96,7 @@ let inputIsPresent: string => bool = [%bs.raw
 let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, ~presenceCheck=true, children) => {
   let handleInputChanged = (name, value, oldState) => {
     if (debug) {
-      Js.log("input changed: " ++ name ++ " - " ++ value);
+      Js.log("Input Changed: " ++ name ++ " - " ++ value);
     };
     let newInputStates =
       oldState.inputStates
@@ -128,7 +132,7 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, ~presenceCheck=t
 
   let handleInputBlurred = (name, oldState) => {
     if (debug) {
-      Js.log("input blurred: " ++ name);
+      Js.log("Input Blurred: " ++ name);
     };
 
     let newInputStates =
@@ -146,12 +150,8 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, ~presenceCheck=t
       newState,
       self => {
         if (debug) {
-          Js.log("submitted: ");
-          Js.log({
-            "submitted": self.state.submitted,
-            "isValid": self.state.isValid,
-            "inputStates": self.state.inputStates |> Array.of_list,
-          });
+          Js.log("submitted state: ");
+          Js.log(SimpleForm_Debug.formatFormState(self.state));
         };
         if (isValid) {
           self.send(Loading);
@@ -165,7 +165,12 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, ~presenceCheck=t
   {
     ...component,
     initialState: () => createInitalState(schema),
-    didMount: _self => {
+    didMount: self => {
+      if (debug) {
+        Js.log("Initial Form State:");
+        Js.log(SimpleForm_Debug.formatFormState(self.state));
+      };
+
       /* TODO use React 16 error boundry to display and error */
       if (presenceCheck) {
         let _ = Js.Global.setTimeout(() => { 

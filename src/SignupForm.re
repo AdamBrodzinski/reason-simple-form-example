@@ -14,7 +14,7 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
     name: "firstName",
     castType: `String,
     label: "First name",
-    validations: [MinLen(2)],
+    validations: [Required, MinLen(2)],
   },
   {
     name: "age",
@@ -45,8 +45,8 @@ let formSchema: list(SimpleForm_Types.schemaItem) = [
 ];
 
 let make = _children => {
-  let handleSubmit = (~sendLoaded, form: formState) => {
-    Js.log(form);
+  let handleSubmit = (~sendLoaded, formState) => {
+    Js.log(SimpleForm_Debug.formatFormState(formState));
     Js.Global.setTimeout(() => sendLoaded(), 1500);
   };
 
