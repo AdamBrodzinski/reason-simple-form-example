@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
     "reason-react-context": "^0.2.0",
     "reason-scripts": "1.0.0-beta4"
   },
@@ -17,9 +17,9 @@
     "deploy": "netlify deploy"
   },
   "devDependencies": {
-    "@glennsl/bs-jest": "^0.4.2",
+    "@glennsl/bs-jest": "^0.4.3",
     "bs-fetch": "^0.3.0",
-    "bs-platform": "^4.0.2",
+    "bs-platform": "^4.0.5",
     "reason-react": "^0.4.2"
   }
 }
