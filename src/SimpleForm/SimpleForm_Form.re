@@ -98,9 +98,13 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, ~presenceCheck=t
     if (debug) {
       Js.log("Input Changed: " ++ name ++ " - " ++ value);
     };
+
+    let updateValueIfMatchesName = (name, value, x: inputState) => 
+      x.name == name ? {...x, value} : x;
+
     let newInputStates =
       oldState.inputStates
-      |> List.map((x: inputState) => x.name == name ? {...x, value} : x);
+      |> List.map(updateValueIfMatchesName(name, value));
 
     let newState = {...oldState, inputStates: newInputStates};
     let inputState = U.findStateByName(newInputStates, name);
@@ -194,13 +198,12 @@ let make = (~schema: list(schemaItem), ~onSubmit, ~debug=false, ~presenceCheck=t
       | Loaded => ReasonReact.Update({...state, loading: false});
       },
     render: self => {
-      let contextValue: context = {
+      <Context.Provider value={
         schemas: schema,
         formState: self.state,
         updateInput: (name, text) => self.send(InputChanged(name, text)),
         sendInputBlur: name => self.send(InputBlurred(name)),
-      };
-      <Context.Provider value=contextValue>
+      }>
         <div className="SimpleForm_Form-container">
           (
             ReasonReact.createDomElement(
