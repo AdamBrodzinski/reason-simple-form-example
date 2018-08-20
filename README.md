@@ -58,9 +58,9 @@ TODO list:
 - [x] move input types to schema
 - [x] consolidate textbox inputs into one `<Input />` component
 - [x] finish missing validations (like `RequiredWithMsg(string)`)
-- [ ] allow for default values or prefilling fields with data
+- [x] allow for default values or prefilling fields with data
 - [ ] cast values into their type before sending to `onSubmit` handler
-- [ ] better exceptions for invalid configurations
+- [ ] maybe make string bool (checkbox) an actual bool?
 - [ ] move over to separate repo and release to NPM
 - [ ] add tests for React
 - [ ] create interface files & add function docs
