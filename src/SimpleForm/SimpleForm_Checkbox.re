@@ -15,6 +15,13 @@ let handleChange = (name, ctx, beforeUpdate, event) => {
   ctx.sendInputBlur(name);
 };
 
+let isChecked = state =>
+  switch (state.value) {
+  | "true" => true
+  | "false" => false
+  | _ => false
+  };
+
 let make =
     (~name: string, ~idPrefix="SF_", ~unsafeProps=?, ~beforeUpdate=?, _ch) => {
   ...component,
@@ -31,6 +38,7 @@ let make =
                  (
                    <input
                      name
+                     checked=(isChecked(state))
                      type_="checkbox"
                      id=(idPrefix ++ name)
                      onChange=(handleChange(name, ctx, beforeUpdate))

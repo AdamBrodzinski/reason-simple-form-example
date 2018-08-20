@@ -51,7 +51,7 @@ let createInitalState = schema => {
          {
            name: iSchema.name,
            valid: true,
-           value: "",
+           value: iSchema.initialValue,
            dirty: false,
            errors: [],
          }

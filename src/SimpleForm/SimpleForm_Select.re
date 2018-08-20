@@ -17,6 +17,7 @@ let make =
                (
                  <select
                    name
+                   value=state.value
                    className="SimpleForm_Select"
                    onBlur=(_e => sendBlur())
                    onChange=(

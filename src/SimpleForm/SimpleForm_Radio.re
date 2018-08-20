@@ -44,6 +44,7 @@ let make =
                               id=(idPrefix ++ value)
                               type_="radio"
                               value
+                              defaultChecked=(state.value === value)
                               name
                             />
                             |> U.insertProps(unsafeProps)

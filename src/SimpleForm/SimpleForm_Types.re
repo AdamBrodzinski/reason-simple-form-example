@@ -40,6 +40,7 @@ type schemaItemType = [ | `String | `Float | `Int | `Bool];
 type schemaItem = {
   name: string,
   castType: schemaItemType,
+  initialValue: string,
   label: string,
   validations: list(validations),
 };
